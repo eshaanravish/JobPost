@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block body %}
+<body>
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+        <a class="navbar-brand">
+            <span class="glyphicon glyphicon-search"></span>
+           Welcome to Job Post</a>
+    </nav>
+    <h2 style="margin-left: 420px; margin-top:2%">Profile</h2>
+	<form class="form-horizontal" name="myForm" style="width: 50%;margin-left: 10%; align:center; margin-top:5%" action="/profile/" onsubmit="" method="post">
+        <div class="form-group" id="fn">
+    		<label class="col-md-4 control-label" for="fname">First Name:</label>
+            <input id="fname" class="form-control" style="border-radius:2px;" type="text" name="fname" maxlength="25" placeholder="First Name">
+    		<div class="col-md-4">user.fname</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-md-4 control-label" for="lname:">Last Name:</label>
+            <input id="fname" class="form-control" style="border-radius:2px;" type="text" name="fname" maxlength="25" placeholder="Lst Name">
+    		<div class="col-md-4">user.lname</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-md-4 control-label" for="email:">EmailId:</label>
+            <input id="fname" class="form-control" style="border-radius:2px;" type="text" name="fname" maxlength="25" placeholder="Email">
+    		<div class="col-md-4">user.email</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-md-4 control-label" for="password:">Password:</label>
+            <input id="fname" class="form-control" style="border-radius:2px;" type="text" name="fname" maxlength="25" placeholder="Password">
+    		<div class="col-md-4">user.password</div>
+    	</div>
+    	<div class="form-group">
+    		<label class="col-md-4 control-label" for="date:">DOB:</label>
+            <input id="fname" class="form-control" style="border-radius:2px;" type="text" name="fname" maxlength="25" placeholder="DOB">
+    		<div class="col-md-4">user.date</div>
+    	</div>
+		<div class="col-md-4 form-group" style="margin-top:20px">
+			<input type="submit" style="margin-left:100px" value="Save">
+		</div>
+	</form>
+</body>
+{% endblock %}

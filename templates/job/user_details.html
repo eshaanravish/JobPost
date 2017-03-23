@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>User Profile</title>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+        if ("{{ job_applied.get_status }}" == "Called for Telephonic round"){
+            $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+            $("#b").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+            }
+        else if ("{{ job_applied.get_status }}" == "Called for Technical round"){
+            $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+            $("#2").addClass( "tracking-progress-bar__item--active");
+            $("#s3").addClass( "tracking-progress-bar__item__bar--active");
+            $("#c").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+            }
+        else if ("{{ job_applied.get_status }}" == "Called for HR round"){
+            $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+            $("#2").addClass( "tracking-progress-bar__item--active");
+            $("#s3").addClass( "tracking-progress-bar__item__bar--active");
+            $("#3").addClass( "tracking-progress-bar__item--active");
+            $("#s4").addClass( "tracking-progress-bar__item__bar--active");
+            $("#d").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+            }
+        else if ("{{ job_applied.get_status }}" == "Selected"){
+            $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+            $("#2").addClass( "tracking-progress-bar__item--active");
+            $("#s3").addClass( "tracking-progress-bar__item__bar--active");
+            $("#3").addClass( "tracking-progress-bar__item--active");
+            $("#s4").addClass( "tracking-progress-bar__item__bar--active");
+            $("#4").addClass( "tracking-progress-bar__item--active");
+            $("#d").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+            }
+        else if ("{{ job_applied.get_status }}" == "Declined"){
+            $("#1").addClass( "tracking-progress-bar__item--stopped");
+            $("#s2").addClass( "tracking-progress-bar__item__bar--stopped");
+            $("#2").addClass( "tracking-progress-bar__item--stopped");
+            $("#s3").addClass( "tracking-progress-bar__item__bar--stopped");
+            $("#3").addClass( "tracking-progress-bar__item--stopped");
+            $("#s4").addClass( "tracking-progress-bar__item__bar--stopped");
+            $("#4").addClass( "tracking-progress-bar__item--stopped");
+            }
+        })
+
+        function overlay() {
+        	el = document.getElementById("overlay");
+        	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+        }
+
+        function hideoverlay() {
+        	el = document.getElementById("overlay");
+        	el.style.visibility = (el.style.visibility == "hidden") ? "visible" : "hidden";
+        }
+
+        function mailapplicant(){
+            $.ajax({
+                url: '',
+                type: 'POST',
+                data: {
+                    'email': 'email',
+                    'title': 'title',
+                    'body': 'body'
+                },
+                success: function(){
+
+                },
+                error: function(){
+
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+                Welcome to Job Post</a>
+        </nav>
+        <div style="width: 65%; margin-left: 15%;">
+            <div class="clearfix">
+                {% if applicant.resume %}<a href="{{ applicant.resume.url }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download Resume</a>{% endif %}
+                <div class="pull-right col-md-7 form-group" style="padding-right:0px;">
+                    <a href="/employeepage/list/{{ job.id }}/" class="btn btn-primary btn-sm" style="float:right; margin-left:4px"><span class="glyphicon glyphicon-chevron-left"></span> Go Back</a>
+                    <a href='#' onclick='overlay()' class="btn btn-primary btn-sm" style="float:right"><span class="glyphicon glyphicon-share-alt"></span> Mail Applicant</a>
+                    <a href="/employeepage/list/{{ job.id }}/{{ user.id }}/rejection" class="btn btn-primary btn-sm" style="float:right; margin-right:4px"><span class="glyphicon glyphicon-chevron-left"></span> Reject Applicant</a>
+                </div>
+            </div>
+            <div style="margin-top:10px; margin-bottom:10px">
+                <div class="job-card">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h4 class="job-heading">{{ job.job_title|title }}</h4>
+                            </div>
+                            <div>
+                                <div class="col-sm-3" style="padding-left:0px">
+                                    <span id="a" class="glyphicon glyphicon-bookmark"></span>
+                                    <small>"Applied"</small>
+                                </div>
+                                <div class="col-sm-3" style="padding-left:0px">
+                                    <span id="b" class="glyphicon glyphicon-bookmark"></span>
+                                    <small>"Telephonic round"</small>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span id="c" class="glyphicon glyphicon-bookmark"></span>
+                                    <small>"Technical round"</small>
+                                </div>
+                                <div class="col-sm-2" style="float:right">
+                                    <span id="d" class="glyphicon glyphicon-bookmark"></span>
+                                    <small>"HR round"</small>
+                                </div>
+                            </div>
+                            <!-- Tracking progress -->
+                            <div style="margin-top:4px;">
+                                <div class="boleto__wrapper boleto__wrapper--tracking-progress-bar" style="padding-top:12px">
+                                    <div class="tracking-progress-bar">
+                                        <div id=1 class="tracking-progress-bar__item tracking-progress-bar__item--first tracking-progress-bar__item--active">1</div>
+                                        <span id=s2 class="tracking-progress-bar__item__bar "></span>
+                                        <div id=2 class="tracking-progress-bar__item">2</div>
+                                        <span id=s3 class="tracking-progress-bar__item__bar"></span>
+                                        <div id=3 class="tracking-progress-bar__item">3</div>
+                                        <span id=s4 class="tracking-progress-bar__item__bar"></span>
+                                        <div id=4 class="tracking-progress-bar__item">4</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- boleto__wrapper -->
+                            <p>{{ job.job_description|safe }}</p>
+                            <span class="glyphicon glyphicon-briefcase"></span>
+                            <small>{{ job.get_year }} Year(s) {{ job.get_month }} Month(s)</small>
+                            <span class="glyphicon glyphicon-map-marker"></span>
+                            <small>{{ job.job_location|title }}</small>
+                            <span class="glyphicon glyphicon-wrench"></span>
+                            <small>Skills: {{ job.job_skillsrequired|title }}</small>
+                            <!-- <span class="glyphicon glyphicon-time"></span>
+                            <small>Applied on: {{ job.applicationtime_set.all.0.applied_at }}</small> -->
+                            <span style="color:#2d882e" class="glyphicon glyphicon-stats"></span>
+                            <small style="color:#2d882e">{{ job_applied.get_status }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px; margin-bottom:10px">
+                <a href="/employeepage/list/{{ job.id }}/mailedcontent/{{ job_applied.id }}/">
+                    <button class="btn btn-block btn-success" style="margin-bottom:8px">
+                        <strong>See Detailed Mailed Content</strong>
+                    </button>
+                </a>
+                <div class="job-card">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <small class="form-control">
+                                <span class="glyphicon glyphicon-time"></span>
+                                <strong> Applied on:
+                                    {{ job_applied.applied_at }}
+                                </strong>
+                            </small></br>
+                            {% if job_applied.telephonic_call_at %}
+                                <small class="form-control">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <strong> Called for Telephonic call on:
+                                        {{ job_applied.telephonic_call_at }}
+                                    </strong>
+                                </small></br>
+                            {% endif %}
+                            {% if job_applied.technical_round_call_at %}
+                                <small class="form-control">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <strong> Called for Technical round on:
+                                        {{ job_applied.technical_round_call_at }}
+                                    </strong>
+                                </small></br>
+                            {% endif %}
+                            {% if job_applied.hr_round_call_at %}
+                                <small class="form-control">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <strong> Called for HR round on:
+                                        {{ job_applied.hr_round_call_at }}
+                                    </strong>
+                                </small></br>
+                            {% endif %}
+                            {% if job_applied.selection_call_at %}
+                                <small class="form-control">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <strong> Mailed for Selection on:
+                                        {{ job_applied.selection_call_at }}
+                                    </strong>
+                                </small></br>
+                            {% endif %}
+                            {% if job_applied.declined_at %}
+                                <small class="form-control">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <strong> Declined on:
+                                        {{ job_applied.declined_at }}
+                                    </strong>
+                                </small></br>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <img src="{{ applicant.applicant_pic.url }}" height="60" width="60" border="1"/>
+            <div class="job-card" style="margin-top:7px;">
+                    <span class="glyphicon glyphicon-user"></span>
+                    {{ applicant.firstname }}
+                    {{ applicant.lastname }}<br>
+            <span class="fa fa-envelope-open-o"></span>
+                {{ user.email }}<br>
+                <span class="fa fa-transgender-alt"></span>
+                {{ applicant.gender }}<br>
+                <span class="fa fa-address-book"></span>
+                {{ applicant.contact }}<br>
+                <span class="glyphicon glyphicon-calendar"></span>
+                {{ applicant.dob }}<br>
+                <span class="fa fa-tasks"></span>
+                {{ applicant.skills|title }}<br>
+            </div>
+            <div class="job-card" style="margin-top:7px;">
+                <span class="glyphicon glyphicon-education"></span>
+                <strong>Education</strong><br>
+                <span class="fa fa-bars"></span> Tenth Percentage:
+                {{ applicant.tenth_percentage }} %<br>
+                <span class="fa fa-bars"></span> Twelth Percentage:
+                {{ applicant.twelth_percentage }} %<br>
+                <span class="glyphicon glyphicon-education"></span> Graduation:
+                {{ applicant.graduation|title }}<br>
+                <span class="fa fa-bars"></span> Graduation Percentage:
+                {{ applicant.graduation_percentage }} %<br>
+                <span class="glyphicon glyphicon-education"></span> Post Graduation:
+                {{ applicant.post_graduation|title }}<br>
+                <span class="fa fa-bars"></span> Post Graduation Percentage:
+                {{ applicant.post_graduation_percentage }} %<br>
+
+            </div>
+            <div class="job-card" style="margin-top:7px;margin-bottom:50px">
+                <span class="glyphicon glyphicon-flag"></span>
+                <strong>Experience</strong><br>
+                <span class="glyphicon glyphicon-lock"></span> Currently Working at:
+                {{ applicant.currently_working_with }}<br>
+                <span class="glyphicon glyphicon-info-sign"></span> Currently Working as:
+                {{ applicant.current_position }}<br>
+                <span class="glyphicon glyphicon-briefcase"></span> Experience:
+                {{ applicant.experience }} Months<br>
+
+            </div>
+        </div>
+        <div id="overlay">
+            <div style="width: 65%; margin-left: 15%;margin-top:50px; background-color: #daddde; border: solid #333; height: 100%">
+                <div class="page-header">
+                    <h2 style="text-align: center;">Mail</h2>
+                </div>
+                <form class="form-horizontal" role="form" name="myForm" style="align:center; margin-top:5%" action="" method="post">
+                    {% csrf_token %}
+                    <small style="margin-left: 32%;">{{ error_message }}</small>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">*Sender's Email:</label>
+                        <div class="col-md-4">
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <small style="margin-left: 32%;">{{ error_message }}</small>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">*Title:</label>
+                        <div class="col-md-4">
+                            {{ form.title }}
+                        </div>
+                    </div>
+                    <small style="margin-left: 32%;">{{ error_message }}</small>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">*Body:</label>
+                        <div class="col-md-4">
+                            {{ form.body }}
+                        </div>
+                    </div>
+            		<div class="col-md-4 col-md-offset-4 form-group" style="margin-top:20px; margin-left:280px">
+                        <small style="margin-left: 32%;">{{ error_message }}</small>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>
+                        <a href='' onclick='hideoverlay()' type="button"" class="btn btn-default btn-sm btn-block">Cancel</a>
+            		</div>
+            	</form>
+            </div>
+        </div>
+    </body>
+{% endblock %}

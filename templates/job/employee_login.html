@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Login_form</title>
+{% endblock %}
+
+{% block js %
+    <script>
+
+        $( "input" ).blur(function() {
+            if ( $(this).parent().hasClass("bootstrap-tagsinput") ) {
+                if ($("#interests").val() == ""){
+                    $("#interests").closest( ".form-group" ).addClass( "has-error" );
+                    $("#interests").next( "small" ).removeClass("hidden").addClass("text-danger");
+                }
+                else {
+                    $("#interests").closest( ".form-group" ).removeClass( "has-error" ).addClass("has-success");
+                    $("#interests").next( "small" ).addClass("hidden").removeClass("text-danger");
+                }
+            } else {
+                if ($( this ).val() == ""){
+                    $( this ).closest( ".form-group" ).addClass( "has-error" );
+                    $( this ).next( "small" ).removeClass("hidden").addClass("text-danger");
+                }
+                else {
+                    $( this ).closest( ".form-group" ).removeClass( "has-error" ).addClass("has-success");
+                    $( this ).next( "small" ).addClass("hidden").removeClass("text-danger");
+                }
+            }
+        });
+
+        function val() {
+            var a = document.forms["myForm"]["fname"].value;
+            var d = document.forms["myForm"]["password"].value;
+            if (a=="") {
+                $( "#fname" ).closest( ".form-group" ).addClass( "has-error" );
+                $( "#fname" ).next( "small" ).removeClass("hidden").addClass("text-danger");
+            } else {
+                $( "#fname" ).next( "small" ).css("display", "none");
+            }
+
+            if (d=="") {
+                $( "#password" ).closest( ".form-group" ).addClass( "has-error" );
+                $( "#password" ).next( "small" ).removeClass("hidden").addClass("text-danger");
+            }
+            else {
+                $( "#password" ).next( "small" ).css("display", "none");
+            }
+            return false;
+        }
+
+    </script>
+{% endblock %}
+
+{% block body %}
+<body>
+	<form class="form-horizontal" name="myForm" style="align:center" onsubmit="" action="/user/" method="post">
+        {% csrf_token %}
+        <h3 style="text-align:center; margin-top:100px">Employee LogIn</h3>
+
+				<div class="form-group" id="fn">
+					<label class="col-md-4 control-label" for="fname">Email:</label>
+					<div class="col-md-4">
+						<input id="fname" class="form-control" type="text" name="fname" maxlength="25" placeholder="Email Id">
+						<small class="hidden">UserName required</small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="password:">Password:</label>
+					<div class="col-md-4">
+						<input id= "password" class="form-control" type="password" name="password" maxlength="25" placeholder="Password">
+						<small class="hidden">Password required</small>
+					</div>
+				</div>
+		<div class="col-md-4 col-md-offset-4 form-group" style="margin-top:20px">
+			<input type="submit" id="error" style="margin-left:630px" value="Login">
+		</div>
+	</form>
+</body>
+{% endblock %}

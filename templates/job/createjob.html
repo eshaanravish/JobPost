@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Add Job</title>
+{% endblock %}
+
+{% block js %}
+    <script>
+    $( function() {
+        $( "#id_job_valid_upto" ).datepicker();
+    });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+            <span class="glyphicon glyphicon-search"></span>
+            Welcome to Job Post</a>
+        </nav>
+        <div class="page-header">
+            <h2 style="text-align:center">New Job</h2>
+        </div>
+        <a href="/employeepage/{{ user.id }}/" style="margin-left:70%" class="btn btn-info" role="button">Back</a>
+        <div style="float:left">
+        	<form class="form-horizontal" name="myForm" style="margin-top:5%" action="" method="post">
+                {% csrf_token %}
+                <small style="margin-left: 34%;">{{ error_message }}</small>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="job_title">Title:</label>
+                    <div class="col-md-4" style="width: 59%;">
+                        {{ form.job_title }}
+                        <small class="">{{ form.job_title.errors }}</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="job_desc">Description:</label>
+                    <div class="col-md-4">
+                        {{ form.job_description }}
+                        <small class="">{{ form.job_description.errors }}</small>
+                    </div>
+                </div>
+        		<div class="form-group">
+        			<label class="col-md-4 control-label" for="job_loc:">Location:</label>
+        			<div class="col-md-4" style="width: 59%;">
+                        {{ form.job_location }}
+                        <small class="">{{ form.job_location.errors }}</small>
+        			</div>
+        		</div>
+        		<div class="form-group">
+        			<label class="col-md-4 control-label" for="job_loc:">Skills Required:</label>
+        			<div class="col-md-4" style="width: 59%;">
+                        {{ form.job_skillsrequired }}
+                        <small class="">{{ form.job_skillsrequired.errors }}</small>
+        			</div>
+        		</div>
+        		<div class="form-group">
+        			<label class="col-md-4 control-label" for="job_loc:">Minimum Qualification:</label>
+        			<div class="col-md-4" style="width: 59%;">
+                        {{ form.job_minqualification }}
+                        <small class="">{{ form.job_minqualification.errors }}</small>
+        			</div>
+        		</div>
+        		<div class="form-group">
+        			<label class="col-md-4 control-label" for="job_loc:">Last Date to Apply:</label>
+        			<div id="id_dob" class="col-md-4" style="width: 59%;">
+                        {{ form.job_valid_upto }}
+                        <small class="">{{ form.job_valid_upto.errors }}</small>
+        			</div>
+        		</div>
+        		<div class="form-group">
+        			<label class="col-md-4 control-label" for="job_loc:">Experience Required:</label>
+        			<div class="col-md-2" style="width: 29%;">
+                        Years {{ form.job_experience }}
+                    </div>
+                    <div class="col-md-2" style="width: 29%;">
+                        Months {{ form.job_experience_months }}
+                    </div>
+        		</div>
+                <div class="col-md-4 col-md-offset-4 form-group" style="margin-top:20px">
+                    <button type="submit" style="margin-left:305px" id="error" class="btn btn-primary btn-lg btn-block ">Create</button>
+        		</div>
+        	</form>
+        </div>
+    </body>
+{% endblock %}

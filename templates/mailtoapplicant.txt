@@ -1,0 +1,6 @@
+{{ body|safe|striptags }}
+
+Thanks and Regards
+{{ email }}
+
+The Job Post

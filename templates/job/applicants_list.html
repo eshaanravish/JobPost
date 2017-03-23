@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>List</title>
+{% endblock %}
+
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+               Welcome to Job Post</a>
+        </nav>
+        <div style="width: 65%; margin-left: 18%;">
+            <div class="page-header">
+                <h2>Welcome</h2>
+            </div>
+            <div class="clearfix">
+                <div class="pull-left" style="margin-bottom:8px">
+                    <a href="/employeepage/{{ user.id }}" class="btn btn-info" role="button">Back</a>
+                </div>
+            </div>
+            <div class="job-card">
+                <div class="page-header" style="padding: 2px 2px 2px 2px;margin-left:10px; margin-top:10px; margin-bottom:10px;">
+                    <h4><strong>Job Details:</strong></h4>
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                    {{ job.likes.all.count }} Likes
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4" for="title">Title:</label>
+                    {{ job.job_title }}
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4" for="description">Description:</label>
+                    {{ job.job_description|safe }}
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4" for="location">Location:</label>
+                    {{ job.job_location }}
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4" for="location">Skills required:</label>
+                    {{ job.job_skillsrequired }}
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4" for="location">Minimum Qualification:</label>
+                    {{ job.job_minqualification }}
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4" for="location">Experience Required:</label>
+                    {{ job.get_year }} Year(s) {{ job.get_month }} Month(s)
+                </div>
+            </div>
+            {% for k in messages %}
+                <span class="job-heading"><strong>{{ k.name|title }}</strong></span>
+                <div style="float:right">
+                    <span class="glyphicon glyphicon-time"></span>
+                    <small> {{ k.created }}</small>
+                </div>
+                <div class="job-card" style="background-color:#f0f0f0; margin-top:3px; border-radius:1px">
+                <div style="margin-top:10px">
+                    <div class="clearfix">
+                        <div class="pull-left" style="margin-right:3px;">
+                        </div>
+                        <div class="clearfix">
+                            <span class="job-heading">{{ k.body|title }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% if application %}
+            <span class="glyphicon glyphicon-list-alt" style="margin-top:25px"></span> List of Applicants
+            <table class="table" style="margin-top:15px">
+                <thead>
+                    <th>Sr.</th>
+                    <th>Name</th>
+                    <th>Applied at</th>
+                    <th>Last Login</th>
+                    <th>Status</th>
+                </thead>
+                <tb>
+                    {% for i in application %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="/employeepage/list/{{ job.id }}/{{ user.id }}/userdetail/{{ i.applicant.id }}/">{{ i.applicant|title }}</a></td>
+                            <td>{{ i.applied_at }}</td>
+                            <td>{{ i.applicant.last_login }}</td>
+                            <td><span class="glyphicon glyphicon-ok-sign"></span> {{ i.get_status }}</td>
+                        </tr>
+                    {% endfor %}
+            {% else %}
+                <span class="glyphicon glyphicon-list-alt" style="margin-top:25px"></span> No Applicants
+            {% endif %}
+                </tb>
+            </table>
+        </div>
+    </body>
+{% endblock %}

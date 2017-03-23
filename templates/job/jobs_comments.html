@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>JobPost</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-search"></span> Job Post</a>
+                </div>
+                <ul class="nav navbar-nav">
+                  <li><a href="/login/" method="GET">Login</a></li>
+                  <li><a href="/signup/" method="GET">Register</a></li>
+                </ul>
+            </div>
+        </nav>
+            <div class="col-md-7" style="padding:20px 10px 50px 70px; margin-left:245px">
+                <div style="margin-top:10px">
+                    <div class="job-card" style="background-color:#ffffff">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div class="mb-1">
+                                        <h4 class="job-heading">{{ job.job_title|title }}</h4>
+                                    </div>
+                                </div>
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <small>{{ job.job_experience }} years</small>
+                                <span class="glyphicon glyphicon-map-marker"></span>
+                                <small>{{ job.job_location }}</small>
+                                <p>{{ job.job_description|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding:4px 0px 2px 0px;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <small>Comments:</small>
+                </div>
+                {% for k in user %}
+                <div class="job-card" style="background-color:#f0f0f0; margin-top:3px">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="job-heading"><strong>Anonymous User:</strong> {{ k.name|title }}</span>
+                    <div style="float:right">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        <small>{{ k.email }}</small>
+                        <span class="glyphicon glyphicon-time"></span>
+                        <small>{{ k.created }}</small>
+                    </div>
+                    <div style="margin-top:10px">
+                        <span class="job-heading"><strong>Message:</strong> {{ k.body|title }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="job-card col-sm-12"  style="border-width:1px; border-radius:1px; padding-top:8px; background-color:#f0f0f0; margin-top:4px">
+                    <form class="form-horizontal" style="margin-top:0px;" name="myForm" style="align:center" action="" method="post">{% csrf_token %}
+                    <div class="col-sm-6" style="padding-left:0px">
+                        <label class="col-sm-6" style="padding-left:0px" for="name">Name:</label>
+                        {{ form.name }}
+                        <!-- <small class="">{{ form.name.errors }}</small> -->
+                    </div>
+                    <div class="col-sm-6" style="padding-left:0px">
+                        <label class="col-sm-6" style="padding-left:0px" for="email:">EmailId:</label>
+                        {{ form.email }}
+                        <!-- <small class="">{{ form.email.errors }}</small> -->
+                    </div>
+                    <div class="col-sm-12" style="padding-left:0px; padding-top:8px">
+                        <label class="col-sm-12" style="padding-left:0px" for="body">Comment:</label>
+                        {{ form.body }}
+                        <!-- <small class="">{{ form.body.errors }}</small> -->
+                    </div>
+                    <div class="col-xs-2 btn-xs btn-block" style="float:right;margin-left:640px; margin-top:7px; padding-left:0px">
+                        <button type="submit" style="background-color:#8689d8" class="btn btn-primary">Send</button>
+                        <small>{{ error_message }}</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+{% endblock %}

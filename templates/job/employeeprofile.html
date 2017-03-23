@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>employee Profile</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+               Welcome to Job Post</a>
+        </nav>
+        <div style="width: 65%; margin-left: 17%;">
+            <div>
+              <img src="{{ employee.employee_pic.url }}" height="150" width="150" border="1"/>
+            </div>
+            <div class="container" style="padding-bottom: 70p">
+                <h5>Username: <small>{{ user.username }}</small></h5>
+                <h5>Email: <small>{{ user.email }}</small></h5>
+            </div>
+            <div class="clearfix">
+                <div class="pull-left">
+                    <a href="/login/{{ user.id }}/profile/edit" class="btn btn-info" role="button"><span class="glyphicon glyphicon-user"></span> Update Profile</a>
+                    <a href="/employeepage/{{ user.id }}/" class="btn btn-info" role="button">Back</a>
+                </div>
+                <div class="pull-right">
+                    <a href="/logout/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                </div>
+                <div class="page-header">
+                </div>
+            </div>
+            <div class="job-card" style="margin-top:7px;">
+                    <span class="glyphicon glyphicon-user"></span>
+                    {{ employee.first_name }}
+                    {{ employee.last_name }}<br>
+            <span class="fa fa-envelope-open-o"></span>
+                {{ user.email }}<br>
+                <span class="fa fa-transgender-alt"></span>
+                {{ employee.get_gender }}<br>
+                <span class="fa fa-address-book"></span>
+                {{ employee.contact }}<br>
+                <span class="glyphicon glyphicon-calendar"></span>
+                {{ employee.dob }}<br>
+                <span class="glyphicon glyphicon-calendar"></span> Date of Joining:
+                {{ employee.joining_date }}<br>
+            </div>
+        </div>
+    </body>
+{% endblock %}

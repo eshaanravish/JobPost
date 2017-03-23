@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>User Profile</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+                Welcome to Job Post</a>
+        </nav>
+        <div style="width: 65%; margin-left: 15%;">
+            <div style="margin-top:10px; margin-bottom:10px">
+                <div class="job-card">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h4 class="job-heading">{{ job.job_title|title }}</h4>
+                            </div>
+                            <strong>Job Description:</strong>
+                                <div style="margin-left:5px">{{ job.job_description|safe }}</div>
+                            <span class="glyphicon glyphicon-briefcase"></span>
+                            <small>{{ job.get_year }} Year(s) {{ job.get_month }} Month(s)</small>
+                            <span class="glyphicon glyphicon-map-marker"></span>
+                            <small>{{ job.job_location|title }}</small>
+                            <span class="glyphicon glyphicon-wrench"></span>
+                            <small>Skills: {{ job.job_skillsrequired|title }}</small>
+                            <span class="glyphicon glyphicon-time"></span>
+                            <small>Applied on: {{ job.applicationtime_set.all.0.applied_at }}</small>
+                            <span style="color:#2d882e" class="glyphicon glyphicon-stats"></span>
+                            <small style="color:#2d882e">{{ job_applied.get_status }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for i in status.mailedcontent_set.all %}
+        {% if i.status_mailed_for == '2' %}
+        <div style="width: 65%; margin-left: 15%;">
+            <div style="margin-top:10px; margin-bottom:10px">
+                <div class="job-card">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- {{ status.mailedcontent_set.all.0.mailed_content }} -->
+                                <strong>Mail Sent to call for Telephonic Round:</strong>
+                                <div style="float:right">
+                                    {{ status.telephonic_call_at }}
+                                </div>
+                                <div style="border-color:#9c8f8f; border:groove; border-width:2px; border-radius:3px">
+                                    <div style="padding: 2px 0px 8px 5px">
+                                        {{ i.mailed_content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if i.status_mailed_for == '3' %}
+            <div style="width: 65%; margin-left: 15%;">
+                <div style="margin-top:10px; margin-bottom:10px">
+                    <div class="job-card">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong>Mail Sent to call for Personal Interview:</strong>
+                                <div style="float:right">
+                                    {{ status.technical_round_call_at }}
+                                </div>
+                                <div style="border-color:#9c8f8f; border:groove; border-width:2px; border-radius:3px">
+                                    <div style="padding: 2px 0px 8px 5px">
+                                        {{ i.mailed_content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if i.status_mailed_for == '4' %}
+            <div style="width: 65%; margin-left: 15%;">
+                <div style="margin-top:10px; margin-bottom:10px">
+                    <div class="job-card">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong>Mail Sent to call for HR round:</strong>
+                                <div style="float:right">
+                                    {{ status.hr_round_call_at }}
+                                </div>
+                                <div style="border-color:#9c8f8f; border:groove; border-width:2px; border-radius:3px">
+                                    <div style="padding: 2px 0px 8px 5px">
+                                        {{ i.mailed_content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if i.status_mailed_for == '5' %}
+                <div style="width: 65%; margin-left: 15%;">
+                    <div style="margin-top:10px; margin-bottom:10px">
+                        <div class="job-card">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                <strong>Mail Sent for Job Offer Letter:</strong>
+                                <div style="float:right">
+                                    {{ status.selection_call_at }}
+                                </div>
+                                <div style="border-color:#9c8f8f; border:groove; border-width:2px; border-radius:3px">
+                                    <div style="padding: 2px 0px 8px 5px">
+                                        {{ i.mailed_content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% endfor %}
+    </body>
+{% endblock %}

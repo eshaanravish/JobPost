@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>All Jobs</title>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    function like_job(elm, userid, jobid) {
+        var url = "/applicantpage/" + userid + "/like/" + jobid + "/",
+            onclick = "unlike_job(this, "+userid+", "+ jobid+")",
+            parent = $(elm).closest(".job-card"),
+            like_count = parent.find(".like_count"),
+            like_text = like_count.text();
+
+        var count = like_text.split(" ")[0],
+            count = (parseInt(count) + 1);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response){
+                response = JSON.parse(response)
+                if (response.status) {
+                    $(elm).removeClass("btn-default");
+                    $(elm).addClass("btn-primary");
+                    $(elm).removeAttr("onclick");
+                    $(elm).attr("onclick", onclick);
+                    $(elm).html('<span class="glyphicon glyphicon-thumbs-up"></span> Unlike');
+                    like_count.text(count + " Likes");
+                }
+            }
+        })
+    }
+    function unlike_job(elm, userid, jobid) {
+        var url = "/applicantpage/" + userid + "/unlike/" + jobid + "/",
+            onclick = "like_job(this, "+userid+", "+ jobid+")",
+            parent = $(elm).closest(".job-card"),
+            like_count = parent.find(".like_count"),
+            like_text = like_count.text();
+
+        var count = like_text.split(" ")[0],
+            count = (parseInt(count) - 1);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response){
+                response = JSON.parse(response)
+                if (response.status) {
+                    $(elm).removeClass("btn-primary");
+                    $(elm).addClass("btn-default");
+                    $(elm).removeAttr("onclick");
+                    $(elm).attr("onclick", onclick);
+                    $(elm).html('<span class="glyphicon glyphicon-thumbs-up"></span> Like');
+                    like_count.text(count + " Likes");
+                }
+            }
+        })
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+                Welcome to Job Post
+            </a>
+        </nav>
+        <div class="container" style="padding-bottom: 70px">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="page-header">
+                        <div class="form-group">
+                            <label for="fname">Name:</label>
+                            {{ user.username }}
+                        </div>
+                            <div class="form-group">
+                            <label for="email:">EmailId:</label>
+                            {{ user.email }}
+                        </div>
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <a href="/applicantpage/{{ user.id }}/" class="btn btn-primary" style="background-color:#8689d8;" role="button">Back</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/logout/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <span class="glyphicon glyphicon-list-alt"></span> All Jobs
+                    {% for i in all_jobs %}
+                    <div style="margin-top:10px">
+                        <div class="job-card" style="background-color:#ffffff; margin-top:10px" role="button">
+                            <div class="row">
+                                <div class="col-sm-10" style="padding-right:0px">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        {% if i.job_availability %}
+                                        <small style="float:right"><strong>Last Date to Apply:</strong> {{ i.job_valid_upto }}</small>
+                                        {% else %}
+                                        <small style="float:right; color:red"><strong>Last Date to Apply:</strong> {{ i.job_valid_upto }}</small>
+                                        {% endif %}
+                                        <h3 class="job-heading">{{ i.job_title|title }}</h3>
+                                    </div>
+                                    <p>{{ i.job_description|safe }}</p>
+                                    <span class="glyphicon glyphicon-briefcase"></span>
+                                    <small>{{ i.get_year }} Year(s) {{ i.get_month }} Month(s)</small>
+                                    <span class="glyphicon glyphicon-map-marker"></span>
+                                    <small>{{ i.job_location }}</small>
+                                    <span class="glyphicon glyphicon-wrench"></span>
+                                    <small>Skills: {{ i.job_skillsrequired }}</small>
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                    <small class="like_count">{{ i.likes.all.count }} Likes</small>
+                                </div>
+                                <div class="col-sm-2">
+                                    {% if request.user in i.likes.all %}
+                                        <a onclick="unlike_job(this, '{{ user.id }}', '{{ i.id }}')" class="btn btn-primary btn-block" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> Unlike</a>
+                                    {% else %}
+                                        <a onclick="like_job(this, '{{ user.id }}', '{{ i.id }}')" class="btn btn-default btn-block" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}

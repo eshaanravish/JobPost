@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        {% csrf_token %}
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+                Welcome to Job Post</a>
+        </nav>
+        <div class="container" style="padding-bottom: 70px">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="page-header">
+                        <div>
+                          <img src="{{ users.applicant_pic.url }}" height="150" width="150" border="1"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="fname">Name:</label>
+                            {{ user.username }}
+                        </div>
+                            <div class="form-group">
+                            <label for="email:">EmailId:</label>
+                            {{ user.email }}
+                        </div>
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <a href="/applicantpage/{{ user.id }}/profile/update/" class="btn btn-info" role="button"><span class="glyphicon glyphicon-user"></span> Update Profile</a>
+                                <a href="/applicantpage/{{ user.id }}/" class="btn btn-info" role="button">Back</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/logout/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:66%; margin-left:17%">
+                <div class="job-card" style="margin-top:7px;">
+                        <span class="glyphicon glyphicon-user"></span>
+                        {{ users.firstname }}
+                        {{ users.lastname }}<br>
+                <span class="fa fa-envelope-open-o"></span>
+                    {{ user.email }}<br>
+                    <span class="fa fa-transgender-alt"></span>
+                    {{ users.gender }}<br>
+                    <span class="fa fa-address-book"></span>
+                    {{ users.contact }}<br>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    {{ users.dob }}<br>
+                    <span class="fa fa-tasks"></span>
+                    {{ users.skills|title }}<br>
+                </div>
+                <div class="job-card" style="margin-top:7px;">
+                    <span class="glyphicon glyphicon-education"></span>
+                    <strong>Education</strong><br>
+                    <span class="fa fa-bars"></span> Tenth Percentage:
+                    {{ users.tenth_percentage }} %<br>
+                    <span class="fa fa-bars"></span> Twelth Percentage:
+                    {{ users.twelth_percentage }} %<br>
+                    <span class="glyphicon glyphicon-education"></span> Graduation:
+                    {{ users.graduation|title }}<br>
+                    <span class="fa fa-bars"></span> Graduation Percentage:
+                    {{ users.graduation_percentage }} %<br>
+                    <span class="glyphicon glyphicon-education"></span> Post Graduation:
+                    {{ users.post_graduation|title }}<br>
+                    <span class="fa fa-bars"></span> Post Graduation Percentage:
+                    {{ users.post_graduation_percentage }} %<br>
+
+                </div>
+                <div class="job-card" style="margin-top:7px;margin-bottom:50px">
+                    <span class="glyphicon glyphicon-flag"></span>
+                    <strong>Experience</strong><br>
+                    <span class="glyphicon glyphicon-lock"></span> Currently Working at:
+                    {{ users.currently_working_with }}<br>
+                    <span class="glyphicon glyphicon-info-sign"></span> Currently Working as:
+                    {{ users.current_position }}<br>
+                    <span class="glyphicon glyphicon-briefcase"></span> Experience:
+                    {{ users.experience }} Months<br>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}

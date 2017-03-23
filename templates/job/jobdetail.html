@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>List</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        {% csrf_token %}
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+                Welcome to Job Post</a>
+        </nav>
+        <div style="width: 55%; margin-left: 22%;">
+            <div class="page-header clearfix">
+                <div class="pull-left">
+                    <a href="/applicantpage/{{ user.id }}/" class="btn btn-info" role="button">Back</a>
+                </div>
+                <div class="pull-right">
+                    <a href="/logout/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                </div>
+            </div>
+            <div class="job-card"  style="border-width:1px; border-radius:9px; padding-top:18px; background-color:#f0f0f0; margin-top:4px">
+                <div class="form-group">
+                    <label class="col-md-4" for="recruiter">Recruiter:</label>
+                    {{ job.created_by|title }}
+                </div>
+            </div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+                <div style="margin-top:10px">
+                    <div class="job-card" style="background-color:#ffffff; margin-top:10px" id="id_job" data-href="/applicantpage/{{ i.id }}/list" role="button">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h3 class="job-heading">{{ job.job_title|title }}</h3>
+                                </div>
+                                <p>{{ job.job_description|safe }}</p>
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <small>{{ job.job_experience }} years</small>
+                                <span class="glyphicon glyphicon-map-marker"></span>
+                                <small>{{ job.job_location|title }}</small>
+                                <span class="glyphicon glyphicon-wrench"></span>
+                                <small>Skills: {{ job.job_skillsrequired }}</small>
+                                <span class="glyphicon glyphicon-time" style="color:green"></span>
+                                <small style="color:green"><strong> Last Date to Apply:</strong> {{ job.job_valid_upto }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% for k in job.UserMessage.all %}
+                    <div class="job-card" style="background-color:#f0f0f0; margin-top:3px; border-radius:1px">
+                        <span class="job-heading"><strong>Name:</strong> {{ k.name }}</span>
+                        <div style="float:right">
+                            <span class="glyphicon glyphicon-time"></span>
+                            <small>{{ k.created }}</small>
+                        </div>
+                        <div style="margin-top:10px">
+                            <div class="clearfix">
+                                <div class="pull-left" style="margin-right:3px;">
+                                </div>
+                                <div class="clearfix">
+                                    <span class="job-heading"><strong>Message:</strong> {{ k.body|title }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <form class="form-horizontal" style="margin-top:10px;" name="myForm" style="align:center" action="" method="post">
+                {% csrf_token %}
+                <div class="col-xs-1">
+                    <img src="{{ applicant.applicant_pic.url }}" height="35" width="38" border="1"/>
+                </div>
+                <div class="col-xs-11">
+                    {{ form.body }}
+                    <small>{{ error_message }}</small>
+                </div>
+                <div class="pull-right">
+                    <div class="btn-xs btn-block" style="margin-top:5px">
+                        <button type="submit" style="background-color:#8689d8; float:right; margin-right:10px" class="btn btn-primary">Message</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+{% endblock %}

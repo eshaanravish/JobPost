@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+    <title>Update</title>
+{% endblock %}
+
+{% block js %}
+    <script>
+    $( function() {
+        $( "#id_dob" ).datepicker();
+    });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+                Welcome to Job Post</a>
+        </nav>
+        <div style="width: 55%; margin-left: 15%;">
+            <form class="form-horizontal" name="myForm" style="align:center; margin-top:5%" enctype="multipart/form-data" action="" method="post">
+                {% csrf_token %}
+                <small style="margin-left: 32%;">{{ error_message }}</small>
+                <span class="glyphicon glyphicon-edit" style="padding-bottom: 20px;margin-left:3%"></span> Edit your Details
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} style="margin-left:230px" class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="first_name">Profile Picture:</label>
+                    <div class="col-md-4">
+                      <img src="{{ applicant.applicant_pic.url }}" height="150" width="150" border="3"/>
+                      <input id="id_applicant_pic" style="margin-top:4px" name="applicant_pic" type="file" required="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="first_name">*First Name:</label>
+                    <div class="col-md-4">
+                        {{ form.firstname }}
+                        <small class="">{{ form.firstname.errors }}</small>
+                    </div>
+                </div>
+    			<div class="form-group">
+    				<label class="col-md-4 control-label" for="last_name:">*Last Name:</label>
+    				<div class="col-md-4">
+                        {{ form.lastname }}
+                        <small class="">{{ form.lastname.errors }}</small>
+    				</div>
+    			</div>
+    			<div class="form-group">
+    				<label class="col-md-4 control-label" for="gender:">*Gender:</label>
+    				<div class="col-md-4">
+                        {{ form.applicant_gender }}
+    				</div>
+    			</div>
+    			<div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Address:</label>
+    				<div class="col-md-4">
+                        {{ form.address }}
+                        <small class="">{{ form.address.errors }}</small>
+    				</div>
+    			</div>
+    			<div class="form-group">
+    				<label class="col-md-4 control-label" for="contact:">*Contact:</label>
+    				<div class="col-md-4">
+                        {{ form.contact }}
+                        <small class="">{{ form.contact.errors }}</small>
+    				</div>
+    			</div>
+    			<div class="form-group">
+    				<label class="col-md-4 control-label" for="dob:">*DOB:</label>
+    				<div class="col-md-4">
+                        {{ form.dob }}
+                        <small class="">{{ form.dob.errors }}</small>
+    				</div>
+				</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Tenth Percentage:</label>
+    				<div class="col-md-4">
+                        {{ form.tenth_percentage }}
+                        <small class="">{{ form.tenth_percentage.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Twelth Percentage:</label>
+    				<div class="col-md-4">
+                        {{ form.twelth_percentage }}
+                        <small class="">{{ form.twelth_percentage.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Graduation:</label>
+    				<div class="col-md-4">
+                        {{ form.graduation }}
+                        <small class="">{{ form.graduation.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Graduation Percentage:</label>
+    				<div class="col-md-4">
+                        {{ form.graduation_percentage }}
+                        <small class="">{{ form.graduation_percentage.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Post Graduation:</label>
+    				<div class="col-md-4">
+                        {{ form.post_graduation }}
+                        <small class="">{{ form.post_graduation.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Post Graduation Percentage:</label>
+    				<div class="col-md-4">
+                        {{ form.post_graduation_percentage }}
+                        <small class="">{{ form.post_graduation_percentage.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Currently Working with:</label>
+    				<div class="col-md-4">
+                        {{ form.currently_working_with }}
+                        <small class="">{{ form.currently_working_with.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Experience:</label>
+    				<div class="col-md-4">
+                        {{ form.experience }}
+                        <small class="">{{ form.experience.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Current Position:</label>
+    				<div class="col-md-4">
+                        {{ form.current_position }}
+                        <small class="">{{ form.current_position.errors }}</small>
+    				</div>
+    			</div>
+                <div class="form-group">
+    				<label class="col-md-4 control-label" for="address:">*Skills:</label>
+    				<div class="col-md-4">
+                        {{ form.skills }}
+                        <small class="">{{ form.skills.errors }}</small>
+    				</div>
+    			</div>
+			</div>
+    		<div class="col-md-4 col-md-offset-4 form-group" style="margin-top:20px">
+                <button type="submit" style="margin-left:10px" id="error" class="btn btn-primary btn-lg">Save</button>
+    		</div>
+    	</form>
+    </body>
+{% endblock %}

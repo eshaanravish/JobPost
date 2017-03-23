@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+                <span class="glyphicon glyphicon-search"></span>
+               Welcome to Job Post</a>
+        </nav>
+        <div style="width: 65%; margin-left: 20%; margin-bottom:50px">
+            <div class="container" style="padding-bottom: 70p">
+                <h4>Name: <small>{{ user.username }}</small></h4>
+                <h4>Email: <small>{{ user.email }}</small></h4>
+            </div>
+            <div class="clearfix">
+                <div class="pull-left">
+                    <a href="/employeepage/{{ user.id }}" class="btn btn-info" role="button"><span class="glyphicon glyphicon glyphicon-user"></span> Back</a>
+                </div>
+                <div class="pull-right">
+                    <a href="/logout/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                </div>
+            </div>
+            <span style="margin-top:10px; padding-bottom:12px" class="glyphicon glyphicon-list-alt"></span> My Jobs
+            {% for i in jobs %}
+                <div style="margin-top:10px">
+                    <div class="job-card" id="id_job" data-href="/applicantpage/{{ i.id }}/list" role="button">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="d-flex w-100 justify-content-between">
+                                    {% if i.job_availability %}
+                                        <small style="float:right; color:green"><strong>Last Date to Apply:</strong> {{ i.job_valid_upto }}</small>
+                                    {% else %}
+                                        <small style="float:right; color:red"><strong>Last Date to Apply:</strong> {{ i.job_valid_upto }}</small>
+                                    {% endif %}
+                                    <h3 class="job-heading">{{ i.job_title|title }}</h3>
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                    <small>{{ i.likes.all.count }} Likes</small>
+                                </div>
+                                <p>{{ i.job_description|safe }}</p>
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <small>{{ i.get_year }} Years {{ i.get_month }} Months</small>
+                                <span class="glyphicon glyphicon-map-marker"></span>
+                                <small>{{ i.job_location|title }}</small>
+                                <span class="glyphicon glyphicon-wrench"></span>
+                                <small>Skills: {{ i.job_skillsrequired|title }}</small>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="/employeepage/{{ user.id }}/{{ i.id }}/delete/" style="background-color: #7a2828; float:right" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-scissors"></span> Delete Job</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+{% endblock %}

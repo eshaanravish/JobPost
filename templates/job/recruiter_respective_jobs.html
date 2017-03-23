@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>JobPost</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-search"></span> Job Post</a>
+                </div>
+                <ul class="nav navbar-nav" style="float:right">
+                  <li><a href="/login/" method="GET">Login</a></li>
+                  <li><a href="/signup/" method="GET">Register</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div style="padding:20px 10px 70px 10px;">
+            <div class="col-md-7" style="margin-left:260px;">
+                <h4>Jobs created by {{ user.username|title }}</h4>
+                {% for i in job %}
+                    <div style="margin-top:10px">
+                        <div class="job-card" style="background-color:#ffffff">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div class="mb-1">
+                                            <h4 class="job-heading">{{ i.job_title|title }}</h4>
+                                        </div>
+                                    </div>
+                                    <span class="glyphicon glyphicon-briefcase"></span>
+                                    <small>{{ i.get_year }} Year(s) {{ i.get_month }} Month(s)</small>
+                                    <span class="glyphicon glyphicon-map-marker"></span>
+                                    <small>{{ i.job_location }}</small>
+                                    <p>{{ i.job_description|safe }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% for k in i.comments.all %}
+                            <div class="job-card" style="background-color:#f0f0f0;border-radius:1px; margin-top:3px">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span class="job-heading"><strong>Anonymous User:</strong> {{ k.name|title }}</span>
+                                <div style="float:right">
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                    <small>{{ k.email }}</small>
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <small>{{ k.created }}</small>
+                                </div>
+                                <div style="margin-top:10px">
+                                    <span class="job-heading"><strong>Message:</strong> {{ k.body|title }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+{% endblock %}

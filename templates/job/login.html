@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>JobPost</title>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $( "#message" ).fadeOut( 7000 );
+})
+</script>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-search"></span> Job Post</a>
+                </div>
+                <ul class="nav navbar-nav" style="float: right">
+                  <li><a href="/" method="GET"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                  <li><a href="/signup/" method="GET"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div style="width: 70%; margin-left: 15%;">
+            <form class="form-horizontal" name="myForm" style="align:center" onsubmit="" action="/login/" method="POST">
+                {% csrf_token %}
+                    <h4 style="text-align:center; margin-top:100px">Login</h4>
+                    {% if messages %}
+                        <ul style="margin-left:270px;" id="message" class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <small style="margin-left: 35%;">{{ error_message }}</small>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">Username:</label>
+                        <div class="col-md-4">
+                            <input class="form-control" type="text" name="username" maxlength="25" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="password:">Password:</label>
+                        <div class="col-md-4">
+                            <input class="form-control" type="password" name="password" maxlength="25" placeholder="Password">
+                            <h6 style="margin-left:195px"><a href="/password_reset" method="GET">forgot password!</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-md-offset-4 form-group" style="margin-top:20px">
+                        <button type="submit" style="margin-left:320px" class="btn btn-primary btn-lg btn-block ">Log In</button>
+                    </div>
+            </form>
+        </div>
+    </body>
+{% endblock %}

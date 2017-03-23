@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Applied Jobs</title>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            if ("{{ status.get_status }}" == "Called for Telephonic round"){
+                $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+                $("#b").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+                }
+            else if ("{{ status.get_status }}" == "Called for Technical round"){
+                $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+                $("#2").addClass( "tracking-progress-bar__item--active");
+                $("#s3").addClass( "tracking-progress-bar__item__bar--active");
+                $("#c").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+                }
+            else if ("{{ status.get_status }}" == "Called for HR round"){
+                $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+                $("#2").addClass( "tracking-progress-bar__item--active");
+                $("#s3").addClass( "tracking-progress-bar__item__bar--active");
+                $("#3").addClass( "tracking-progress-bar__item--active");
+                $("#s4").addClass( "tracking-progress-bar__item__bar--active");
+                $("#d").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+                }
+            else if ("{{ status.get_status }}" == "Selected"){
+                $("#s2").addClass( "tracking-progress-bar__item__bar--active");
+                $("#2").addClass( "tracking-progress-bar__item--active");
+                $("#s3").addClass( "tracking-progress-bar__item__bar--active");
+                $("#3").addClass( "tracking-progress-bar__item--active");
+                $("#s4").addClass( "tracking-progress-bar__item__bar--active");
+                $("#4").addClass( "tracking-progress-bar__item--active");
+                $("#d").addClass( "fa fa-cog fa-spin fa-1x fa-fw");
+                }
+            else if ("{{ status.get_status }}" == "Declined"){
+                $("#1").addClass( "tracking-progress-bar__item--stopped");
+                $("#s2").addClass( "tracking-progress-bar__item__bar--stopped");
+                $("#2").addClass( "tracking-progress-bar__item--stopped");
+                $("#s3").addClass( "tracking-progress-bar__item__bar--stopped");
+                $("#3").addClass( "tracking-progress-bar__item--stopped");
+                $("#s4").addClass( "tracking-progress-bar__item__bar--stopped");
+                $("#4").addClass( "tracking-progress-bar__item--stopped");
+                }
+            })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <a class="navbar-brand">
+            <span class="glyphicon glyphicon-search"></span>
+            Welcome to Job Post</a>
+        </nav>
+        <div class="container" style="padding-bottom: 70px">
+            <div class="row">
+                <div class="col-xs-9" style="margin-left:150px">
+                    <div class="page-header">
+                        <div class="form-group">
+                            <label for="fname">Name:</label>
+                            {{ user.username }}
+                        </div>
+                            <div class="form-group">
+                            <label for="email:">EmailId:</label>
+                            {{ user.email }}
+                         </div>
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <a href="/applicantpage/{{ user.id }}/profile/applied/" class="btn btn-info" role="button">Back</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/logout/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="glyphicon glyphicon-list-alt"></span> Jobs Applied
+                        <div style="margin-top:10px">
+                            <div class="job-card">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h4 class="job-heading">{{ job.job_title|title }}</h4>
+                                        </div>
+                                        <div>
+                                            <div class="col-sm-3" style="padding-left:0px">
+                                                <span id="a" class="glyphicon glyphicon-bookmark"></span>
+                                                <small>"Applied"</small>
+                                            </div>
+                                            <div class="col-sm-3" style="padding-left:0px">
+                                                <span id="b" class="glyphicon glyphicon-bookmark"></span>
+                                                <small>"Telephonic round"</small>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span id="c" class="glyphicon glyphicon-bookmark"></span>
+                                                <small>"Technical round"</small>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <span id="d" class="glyphicon glyphicon-bookmark"></span>
+                                                <small>"HR round"</small>
+                                            </div>
+                                        </div>
+                                        <!-- Tracking progress -->
+                                        <div style="margin-top:2px">
+                                            <div class="boleto__wrapper boleto__wrapper--tracking-progress-bar" style="padding-top:12px">
+                                                <div class="tracking-progress-bar">
+                                                    <div id=1 class="tracking-progress-bar__item tracking-progress-bar__item--first tracking-progress-bar__item--active">1</div>
+                                                    <span id=s2 class="tracking-progress-bar__item__bar "></span>
+                                                    <div id=2 class="tracking-progress-bar__item ">2</div>
+                                                    <span id=s3 class="tracking-progress-bar__item__bar"></span>
+                                                    <div id=3 class="tracking-progress-bar__item">3</div>
+                                                    <span id=s4 class="tracking-progress-bar__item__bar"></span>
+                                                    <div id=4 class="tracking-progress-bar__item">4</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- boleto__wrapper -->
+                                        <p>{{ job.job_description|safe }}</p>
+                                        <span class="glyphicon glyphicon-briefcase"></span>
+                                        <small>{{ job.job_experience }} Months</small>
+                                        <span class="glyphicon glyphicon-map-marker"></span>
+                                        <small>{{ job.job_location|title }}</small>
+                                        <span class="glyphicon glyphicon-wrench"></span>
+                                        <small>Skills: {{ job.job_skillsrequired|title }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top:10px; margin-bottom:10px">
+                            <div style="text-align:center; margin-bottom:5px"><strong><h4>APPLICATION STATUS TIMELINE</h4></strong></div>
+                            <div class="job-card">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <small class="form-control">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                            <strong> Applied on:
+                                                {{ status.applied_at }}
+                                            </strong>
+                                        </small></br>
+                                        {% if status.telephonic_call_at %}
+                                            <small class="form-control">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                                <strong> Called for Telephonic call on:
+                                                    {{ status.telephonic_call_at }}
+                                                </strong>
+                                            </small></br>
+                                        {% endif %}
+                                        {% if status.technical_round_call_at %}
+                                            <small class="form-control">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                                <strong> Called for Technical round on:
+                                                    {{ status.technical_round_call_at }}
+                                                </strong>
+                                            </small></br>
+                                        {% endif %}
+                                        {% if status.hr_round_call_at %}
+                                            <small class="form-control">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                                <strong> Called for HR round on:
+                                                    {{ status.hr_round_call_at }}
+                                                </strong>
+                                            </small></br>
+                                        {% endif %}
+                                        {% if status.selection_call_at %}
+                                            <small class="form-control">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                                <strong> Mailed for Selection on:
+                                                    {{ status.selection_call_at }}
+                                                </strong>
+                                            </small></br>
+                                        {% endif %}
+                                        {% if status.declined_at %}
+                                            <small class="form-control">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                                <strong> Declined on:
+                                                    {{ status.declined_at }}
+                                                </strong>
+                                            </small></br>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}

@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>user</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h3>Applied Successfully</h3>
+    <!-- {% if user.username %} -->
+        <table>
+            <thead>
+                <th>Username</th>
+                <th>Job Title</th>
+                <th>Job Description</th>
+                <th>Job Location</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ User.username }}</td>
+                    <td>{{ job_id.job_title }}</td>
+                    <td>{{ job_id.job_desc }}</td>
+                    <td>{{ job_id.job_loc }}</td>
+                </tr>
+            </tbody>
+        </table>
+    <!-- {% else %}
+    <p>Welcome anonymous user!
+    You need to <a href="/login/">login</a></p>
+    {% endif %} -->
+</body>
+</html>
