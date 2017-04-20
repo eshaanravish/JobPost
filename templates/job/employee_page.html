@@ -19,15 +19,11 @@ $(document).ready(function(){
                 <span class="glyphicon glyphicon-search"></span>
                Welcome to Job Post</a>
                <div style="color: silver; float:right; margin-right:5px;margin-top:5px">
-                   {{ user.username|title }} . {{ user.email }}
+                   {{ user.email }}
                    <a href="/login/{{ user.id }}/profile/"><img class="image-circle" src="{{ employee.employee_pic.url }}" height="40" width="40 " border="1"/></a>
                </div>
         </nav>
         <div style="width: 65%; margin-left: 20%; margin-bottom:50px">
-            <div class="container" style="padding-bottom: 70p">
-                <h4>Name: <small>{{ user.username }}</small></h4>
-                <h4>Email: <small>{{ user.email }}</small></h4>
-            </div>
             <div class="clearfix">
                 <div class="pull-left">
                     <a href="/login/{{ user.id }}/profile" class="btn btn-info" role="button"><span class="glyphicon glyphicon-user"></span> Profile</a>

@@ -42,8 +42,47 @@ DEFAULT_FROM_EMAIL = 'admin@jobpost.com'
 
 # Application definition
 
+# Google API details
+
+GOOGLE_CLIENT_ID = '459600573348-f8ng5ifjugc14t8afnhhcphjml8nckir.apps.googleusercontent.com'
+
+GOOGLE_CLIENT_SECRET = 'NbxNp6yZtN1QiBY-vUQ9zMot'
+
+API_KEY = 'AIzaSyDnsRUXtIvbvp4zCkzj7BUbA3xzoTIof6k'
+
+#Facebook API Details
+
+FACEBOOK_CLIENT_ID = '237086353424892'
+
+FACEBOOK_CLIENT_SECRET = '71e32063afaf632812e138a2785591ac'
+
+FACEBOOK_ACCESS_TOKEN = '237086353424892|IhanNpMQj-dlOkF_Yabj5n8iwA4'
+
+# Instagram API Details
+
+INSTAGRAM_CLIENT_ID = '629ffae177374707a40ec22dca4f9c0b'
+
+INSTAGRAM_CLIENT_SECRET = 'c49b1b0fc897463aa90a6c21af7a7aa7'
+
+# LinkedIn API Details
+
+LINKEDIN_CLIENT_ID = '81s11folma544z'
+
+LINKEDIN_CLIENT_SECRET = 'Y8vBMwEaYewWVsDD'
+
+# Twitter API Details
+
+TWITTER_AUTHORIZATION = 'IDFXAeyqEbwPntYMfP51zbGAn:JbVgBVHBzwdb29TYZGyIUNQSiuTUKV9fX36NFVpORUj4W4g4fi'
+
+TWITTER_TOKEN = 'IDFXAeyqEbwPntYMfP51zbGAn'
+
+TWITTER_SECRET = 'JbVgBVHBzwdb29TYZGyIUNQSiuTUKV9fX36NFVpORUj4W4g4fi'
+
+
+
 INSTALLED_APPS = [
     'job',
+    'authenticate',
     'django.core.files.images',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,7 +91,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
-    'tags_input',
+    # 'tags_input',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +159,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-MEDIA_ROOT =     os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>MainPage</title>
+{% endblock %}
+
+{% block body %}
+<div style="text-align:center">
+    <h1>Hello User</h1>
+    {{ data.id }}
+    {{ data.name }}
+    {{ data.email }}
+    {{ data.gender }}
+    <a href="/logout/">Sign out</a>
+</div>
+{% endblock %}

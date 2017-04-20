@@ -7,9 +7,9 @@ from django.views.static import serve
 
 
 urlpatterns = [
-    url(r'^$', views.homepage, name='homepage'),
+    url(r'^homepage/$', views.homepage, name='homepage'),
     url(r'^signup/$', views.applicantsignup, name='adduser'),
-    url(r'^login/$', views.applicantlogin, name='applicantlogin'),
+    url(r'^home/$', views.applicantlogin, name='applicantlogin'),
     url(r'^(?P<jobs_id>[0-9]+)/messages/$', views.jobmessages, name='jobmessages'),
     url(r'^(?P<user_id>[0-9]+)/recruiter_jobs/$', views.recruiterrespectivejobs, name='recruiterrespectivejobs'),
     url(r'^logout/$', views.userlogout, name='logout'),

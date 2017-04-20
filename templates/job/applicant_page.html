@@ -42,11 +42,12 @@
         <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
             <a class="navbar-brand">
                 <span class="glyphicon glyphicon-search"></span>
-                Welcome to Job Post</a>
-                <div style="color: silver; float:right; margin-right:5px;margin-top:5px">
-                    {{ user.username|title }} . {{ user.email }}
-                    <a href="/applicantpage/{{ user.id }}/profile/"><img class="image-circle" src="{{ applicant.applicant_pic.url }}" height="40" width="40 " border="1"/></a>
-                </div>
+                Welcome to Job Post
+            </a>
+            <div style="color: silver; float:right; margin-right:5px;margin-top:5px">
+                {{ user.username|title }} . {{ user.email }}
+                <a href="/applicantpage/{{ user.id }}/profile/"><img class="image-circle" src="{{ applicant.applicant_pic.url }}" height="40" width="40 " border="1"/></a>
+            </div>
         </nav>
         <div class="container" style="padding-bottom: 70px">
             <div class="row">
@@ -74,36 +75,40 @@
                             {% endfor %}
                         </ul>
                     {% endif %}
-                    <span class="glyphicon glyphicon-list-alt"></span> Available Jobs
-                    {% for i in applicantjobs %}
-                    <div style="margin-top:10px">
-                        <div class="job-card" style="background-color:#ffffff; margin-top:10px" id="id_job" data-href="/applicantpage/{{ user.id }}/list/{{ i.id }}/" role="button">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <small style="float:right; color:green"><strong>Last Date to Apply:</strong> {{ i.job_valid_upto }}</small>
-                                        <a href="/applicantpage/{{ user.id }}/list/{{ i.id }}/" class="mb-1">
-                                            <h3 class="job-heading">{{ i.job_title|title }}</h3>
-                                        </a>
+                    {% if applicantjobs %}
+                        <span class="glyphicon glyphicon-list-alt"></span> Available Jobs
+                        {% for i in applicantjobs %}
+                        <div style="margin-top:10px">
+                            <div class="job-card" style="background-color:#ffffff; margin-top:10px" id="id_job" data-href="/applicantpage/{{ user.id }}/list/{{ i.id }}/" role="button">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <small style="float:right; color:green"><strong>Last Date to Apply:</strong> {{ i.job_valid_upto }}</small>
+                                            <a href="/applicantpage/{{ user.id }}/list/{{ i.id }}/" class="mb-1">
+                                                <h3 class="job-heading">{{ i.job_title|title }}</h3>
+                                            </a>
+                                        </div>
+                                        <p>{{ i.job_description|safe }}</p>
+                                        <span class="glyphicon glyphicon-briefcase"></span>
+                                        <small>{{ i.get_year }} Year(s) {{ i.get_month }} Month(s)</small>
+                                        <span class="glyphicon glyphicon-map-marker"></span>
+                                        <small>{{ i.job_location }}</small>
+                                        <span class="glyphicon glyphicon-wrench"></span>
+                                        <small>Skills: {{ i.job_skillsrequired }}</small>
                                     </div>
-                                    <p>{{ i.job_description|safe }}</p>
-                                    <span class="glyphicon glyphicon-briefcase"></span>
-                                    <small>{{ i.get_year }} Year(s) {{ i.get_month }} Month(s)</small>
-                                    <span class="glyphicon glyphicon-map-marker"></span>
-                                    <small>{{ i.job_location }}</small>
-                                    <span class="glyphicon glyphicon-wrench"></span>
-                                    <small>Skills: {{ i.job_skillsrequired }}</small>
-                                </div>
-                                <div class="col-sm-2">
-                                    {% if user in i.applied_by.all %}
-                                        <a style="background-color: #2a7d31;" class="btn btn-primary btn-block" role="button"><span class="glyphicon glyphicon-paperclip"></span> Applied</a>
-                                    {% else %}
-                                        <a onclick="applyforjob(this, '{{ user.id }}', '{{ i.id }}')" style="background-color:#8689d8;" class="btn btn-primary btn-block" role="button" id="apply_job"><span class="glyphicon glyphicon-paperclip"></span> Apply</a>
-                                    {% endif %}
+                                    <div class="col-sm-2">
+                                        {% if user in i.applied_by.all %}
+                                            <a style="background-color: #2a7d31;" class="btn btn-primary btn-block" role="button"><span class="glyphicon glyphicon-paperclip"></span> Applied</a>
+                                        {% else %}
+                                            <a onclick="applyforjob(this, '{{ user.id }}', '{{ i.id }}')" style="background-color:#8689d8;" class="btn btn-primary btn-block" role="button" id="apply_job"><span class="glyphicon glyphicon-paperclip"></span> Apply</a>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="glyphicon glyphicon-list-alt"></span> Sorry! No Jobs available right now. 
+                    {% endif %}
                 </div>
             </div>
         </div>

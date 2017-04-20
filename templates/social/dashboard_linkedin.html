@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>MainPage</title>
+{% endblock %}
+
+
+{% block body %}
+<div style="text-align:center">
+    <h1>Hello LinkedIn User</h1>
+    {{ message }}<br>
+    {{ user_info.id }}<br>
+    {{ user_info.firstName }}<br>
+    {{ user_info.lastName }}<br>
+    {{ user_info.emailAddress }}<br>
+</div>
+<a href="/logout/" style="margin-left:622px"  type="button" class="btn btn-default">LogOut</a>
+{% endblock %}

@@ -1,7 +1,7 @@
 import json
 import datetime
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 
 from ckeditor.fields import RichTextField
@@ -13,21 +13,21 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import password_reset as django_password_reset
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.template import RequestContext
-from django.template import Context
+from django.template import RequestContext, Context
 
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail, mail_admins
-from django.template import Context
 from django.template.loader import get_template
 
 from django.contrib.auth.models import User
-from job.models import Job, Employee, Applicant, ApplicationTime, Messages, UsersMessage, MailedContent
+from job.models import Job, Employee, Applicant, ApplicationTime, Messages, \
+UsersMessage, MailedContent
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django import forms
-from job.forms import UserForm, CreateJob, EmployeeForm, ApplicantForm, MessagesForm, MailtoApplicantForm, UsersMessageForm, SearchForm
+from job.forms import UserForm, CreateJob, EmployeeForm, ApplicantForm, \
+MessagesForm, MailtoApplicantForm, UsersMessageForm, SearchForm
 import operator
 
 from django.db.models import Q
@@ -74,19 +74,19 @@ def applicantsignup(request):
         form = UserForm(use_required_attribute=False)
     return render(request, 'job/signup_form.html', {'form': form, 'error_message': error_message})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def applicantprofile(request, user_id):
     users = Applicant.objects.get(username__id=user_id)
     user = User.objects.get(pk=user_id)
     return render(request, 'job/applicantprofile.html', {'user': user, 'users':users})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def employeeprofile(request, user_id):
     employee = Employee.objects.get(employee__id=user_id)
     user = User.objects.get(pk=user_id)
     return render(request, 'job/employeeprofile.html',{'user': request.user, 'employee': employee})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def editemployeeprofile(request, user_id):
     employee = Employee.objects.get(employee__id = user_id)
     if request.method == "POST":
@@ -109,7 +109,7 @@ def editemployeeprofile(request, user_id):
         form = EmployeeForm(instance = employee, use_required_attribute=False)
     return render(request, 'job/editemployee.html', {'form': form, 'error_message': error_message, 'employee': employee})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def editapplicantprofile(request, user_id):
     applicant = Applicant.objects.get(username__id = user_id)
     if request.method == "POST":
@@ -133,49 +133,58 @@ def editapplicantprofile(request, user_id):
         form = ApplicantForm(instance = applicant, use_required_attribute=False)
     return render(request, 'job/editapplicant.html', {'form': form, 'error_message': error_message, 'applicant': applicant})
 
-def applicantlogin(request):
-    if request.method == "POST":
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        if username and password:
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                if user.is_staff:
-                    return redirect(reverse('employeepage', args=[user.id]))
-                    pass
-                else:
-                    return redirect(reverse('applicantpage', args=[user.id]))
-                    pass
-            else:
-                error_message = "You have provided invalid credentials."
-        else:
-            error_message = "All fields are mandatory."
-    else:
-        error_message = ""
-    return render(request, 'job/login.html', {'error_message': error_message})
 
-@login_required(login_url="login/")
+def applicantlogin(request):
+    if request.user.is_authenticated():
+        if request.user.is_staff:
+            return redirect(reverse('employeepage', args=[request.user.id]))
+            pass
+        else:
+            return redirect(reverse('applicantpage', args=[request.user.id]))
+            pass
+    else:
+        if request.method == "POST":
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            if username and password:
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    if user.is_staff:
+                        return redirect(reverse('employeepage', args=[user.id]))
+                        pass
+                    else:
+                        return redirect(reverse('applicantpage', args=[user.id]))
+                        pass
+                else:
+                    error_message = "You have provided invalid credentials."
+            else:
+                error_message = "All fields are mandatory."
+        else:
+            error_message = ""
+        return render(request, 'job/login.html', {'error_message': error_message})
+
+@login_required(login_url="/login/")
 def employeepage(request, user_id):
     users = User.objects.all()
     all_jobs = Job.objects.all()
     employee = Employee.objects.get(employee__id = user_id)
     return render(request, 'job/employee_page.html',{'user': request.user, 'users': users, 'employee': employee, 'all_jobs': all_jobs})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def applicantpage(request, user_id):
     user = User.objects.get(pk= user_id)
     applicantjobs = Job.objects.filter(job_availability = True)
     applicant = Applicant.objects.get(username__id = user_id)
     return render(request, 'job/applicant_page.html', {'applicant': applicant, 'user': request.user, 'user': user, 'applicantjobs': applicantjobs})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def alljobs(request, user_id):
     user = User.objects.get(pk= user_id)
     all_jobs = Job.objects.all()
     return render(request, 'job/all_jobs.html', {'user': request.user,'user': user, 'all_jobs': all_jobs})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def likes(request, user_id, jobs_id):
     if request.is_ajax():
         liked_job = Job.objects.get(pk = jobs_id)
@@ -186,7 +195,7 @@ def likes(request, user_id, jobs_id):
     else:
         Http404
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def unlikes(request, user_id, jobs_id):
     if request.is_ajax():
         unliked_job = Job.objects.get(pk = jobs_id)
@@ -197,12 +206,12 @@ def unlikes(request, user_id, jobs_id):
     else:
         Http404
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def userlogout(request):
     logout(request)
     return redirect('/')
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def createjob(request, user_id):
     if request.method == "POST":
         user = User.objects.get(pk=user_id)
@@ -220,19 +229,19 @@ def createjob(request, user_id):
         form = CreateJob(use_required_attribute=False)
     return render(request, 'job/createjob.html', {'error_message': error_message, 'form':form})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def employeejobs(request, user_id):
     jobs = Job.objects.filter(created_by__id = user_id)
     return render(request, 'job/employeejobs.html', {'jobs':jobs})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def deletejob(request, jobs_id, user_id):
     jobs = Job.objects.filter(created_by__id = user_id)
     delete_job = Job.objects.get(pk = jobs_id)
     delete_job.delete()
     return render(request, 'job/employeejobs.html', {'jobs':jobs})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def applyjob(request, jobs_id):
     if request.is_ajax():
         job = Job.objects.get(pk=jobs_id)
@@ -249,19 +258,19 @@ def applyjob(request, jobs_id):
     else:
         Http404
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def applicantslist(request, jobs_id):
     job = Job.objects.get(pk=jobs_id)
     messages = UsersMessage.objects.filter(job__id = jobs_id)
     application = ApplicationTime.objects.filter(job__id = jobs_id)
     return render(request, 'job/applicants_list.html', {'job':job, 'application':application, 'messages': messages})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def details(request, user_id):
     user = Applicant.objects.get(pk= user_id)
     return render(request, 'job/details.html', {'user':user})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def usermessage(request, user_id, jobs_id):
     user = User.objects.get(pk = user_id)
     applicant = Applicant.objects.get(username__in = [request.user])
@@ -283,7 +292,7 @@ def usermessage(request, user_id, jobs_id):
         form = UsersMessageForm(use_required_attribute=False)
     return render(request, 'job/jobdetail.html', {'form': form, 'job':job, 'error_message': error_message, 'user': request.user,'user': user, 'applicant':applicant})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def userdetail(request, user_id, jobs_id, applicant_id):
     applicant = Applicant.objects.get(username__id = applicant_id)
     user = User.objects.get(pk = applicant_id)
@@ -358,18 +367,19 @@ def userdetail(request, user_id, jobs_id, applicant_id):
         form = mail_form(data=request.POST)
     return render(request, 'job/user_details.html', {'form': form, 'applicant':applicant, 'user': user, 'job': job, 'job_applied': job_applied})
 
+@login_required(login_url="/login/")
 def Mailedcontent(request, jobs_id, job_applied_id):
     job = Job.objects.get(pk = jobs_id)
     status = ApplicationTime.objects.get(pk = job_applied_id)
     return render(request, 'job/mailed_content.html', {'job':job, 'status': status})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def appliedjobs(request, user_id):
     job = Job.objects.filter(applied_by__id = user_id)
     status = ApplicationTime.objects.filter(applicant__id = user_id, job__id = job)
     return render(request, 'job/jobs_applied.html', {'job':job, 'status': status})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def jobstatus(request, user_id, jobs_id):
     job = Job.objects.get(pk = jobs_id)
     status = ApplicationTime.objects.get(applicant__id = user_id, job__id = jobs_id)
@@ -393,7 +403,7 @@ def jobmessages(request, jobs_id):
         form = MessagesForm(use_required_attribute=False)
     return render(request, 'job/jobs_comments.html', {'job':job, 'user': user, 'form': form})
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def rejection(request, jobs_id, user_id):
     job = Job.objects.get(pk=jobs_id)
     job_rejected = ApplicationTime.objects.get(job__id=jobs_id, applicant__id=user_id)

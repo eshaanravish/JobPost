@@ -5,60 +5,60 @@
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript">
-    function like_job(elm, userid, jobid) {
-        var url = "/applicantpage/" + userid + "/like/" + jobid + "/",
-            onclick = "unlike_job(this, "+userid+", "+ jobid+")",
-            parent = $(elm).closest(".job-card"),
-            like_count = parent.find(".like_count"),
-            like_text = like_count.text();
+    <script type="text/javascript">
+        function like_job(elm, userid, jobid) {
+            var url = "/applicantpage/" + userid + "/like/" + jobid + "/",
+                onclick = "unlike_job(this, "+userid+", "+ jobid+")",
+                parent = $(elm).closest(".job-card"),
+                like_count = parent.find(".like_count"),
+                like_text = like_count.text();
 
-        var count = like_text.split(" ")[0],
-            count = (parseInt(count) + 1);
+            var count = like_text.split(" ")[0],
+                count = (parseInt(count) + 1);
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function(response){
-                response = JSON.parse(response)
-                if (response.status) {
-                    $(elm).removeClass("btn-default");
-                    $(elm).addClass("btn-primary");
-                    $(elm).removeAttr("onclick");
-                    $(elm).attr("onclick", onclick);
-                    $(elm).html('<span class="glyphicon glyphicon-thumbs-up"></span> Unlike');
-                    like_count.text(count + " Likes");
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response){
+                    response = JSON.parse(response)
+                    if (response.status) {
+                        $(elm).removeClass("btn-default");
+                        $(elm).addClass("btn-primary");
+                        $(elm).removeAttr("onclick");
+                        $(elm).attr("onclick", onclick);
+                        $(elm).html('<span class="glyphicon glyphicon-thumbs-up"></span> Unlike');
+                        like_count.text(count + " Likes");
+                    }
                 }
-            }
-        })
-    }
-    function unlike_job(elm, userid, jobid) {
-        var url = "/applicantpage/" + userid + "/unlike/" + jobid + "/",
-            onclick = "like_job(this, "+userid+", "+ jobid+")",
-            parent = $(elm).closest(".job-card"),
-            like_count = parent.find(".like_count"),
-            like_text = like_count.text();
+            })
+        }
+        function unlike_job(elm, userid, jobid) {
+            var url = "/applicantpage/" + userid + "/unlike/" + jobid + "/",
+                onclick = "like_job(this, "+userid+", "+ jobid+")",
+                parent = $(elm).closest(".job-card"),
+                like_count = parent.find(".like_count"),
+                like_text = like_count.text();
 
-        var count = like_text.split(" ")[0],
-            count = (parseInt(count) - 1);
+            var count = like_text.split(" ")[0],
+                count = (parseInt(count) - 1);
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function(response){
-                response = JSON.parse(response)
-                if (response.status) {
-                    $(elm).removeClass("btn-primary");
-                    $(elm).addClass("btn-default");
-                    $(elm).removeAttr("onclick");
-                    $(elm).attr("onclick", onclick);
-                    $(elm).html('<span class="glyphicon glyphicon-thumbs-up"></span> Like');
-                    like_count.text(count + " Likes");
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response){
+                    response = JSON.parse(response)
+                    if (response.status) {
+                        $(elm).removeClass("btn-primary");
+                        $(elm).addClass("btn-default");
+                        $(elm).removeAttr("onclick");
+                        $(elm).attr("onclick", onclick);
+                        $(elm).html('<span class="glyphicon glyphicon-thumbs-up"></span> Like');
+                        like_count.text(count + " Likes");
+                    }
                 }
-            }
-        })
-    }
-</script>
+            })
+        }
+    </script>
 {% endblock %}
 
 {% block body %}
