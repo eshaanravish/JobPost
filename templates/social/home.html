@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-sm-6" style="border-right:1px groove">
                                 <h4 id="font" class="font-bold" style="text-align:center">
-                                    SignUp
+                                    SignUp/Login
                                 </h4>
                                 <div>
                                     <br>
@@ -38,17 +38,14 @@
                                             </div>
                                         </div>
                                         <br>
-                                        <button type="submit" class="btn btn-primary btn-block">SignUp</button>
+                                        <button type="submit" class="btn btn-primary btn-block">SignUp/LogIn</button>
                                         <small style="margin-left: 43%;">{{ error_message }}</small>
                                     </form>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <h4 id="font" class="font-bold" style="text-align:center">
-                                    LogIn
-                                </h4>
                                 <br>
-                                <div class="btn-group btn-group-justified">
+                                <div class="btn-group btn-group-justified" style="margin-top:54px">
                                     <!-- <a style="margin-left:75px" href="https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http%3A%2F%2Flocalhost%3A8001%2Fhome&response_type=code&client_id=210523529134-nuas607qtkjrs5rnbult07juhsr04j8k.apps.googleusercontent.com">Google</a> -->
                                     <a class="btn btn-default" href="/google_home/"style="color:#d34836"><i class="fa fa-google" style="margin-top:3px"></i> Google</a>
                                     <!-- <a style="margin-left:75px" href="https://graph.facebook.com/oauth/authorize?client_id=237086353424892&redirect_uri=http%3A%2F%2Flocalhost:8001%2Fsocial_facebook&granted_scopes=public_profile">Facebook</a> -->
@@ -59,21 +56,6 @@
                                     <!-- <a class="btn btn-default btn-block" href="/instagram_home/"><i class="fa fa-instagram" style="margin-top:3px"></i> Instagram</a> -->
                                     <a class="btn btn-default btn-block" href="/twitter_login/"><i class="fa fa-twitter" style="margin-top:3px"></i> Twitter</a>
                                 </div>
-                                <form name="loginForm" style="margin-top:15px" onsubmit="" action="/login/" method="POST">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <div class="control-label">
-                                            <input class="form-control" type="text" name="username" maxlength="25" placeholder="Username">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="control-label">
-                                            <input class="form-control" type="password" name="password" maxlength="25" placeholder="Password">
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
-                                </form>
                             </div>
                         </div>
                     </div>

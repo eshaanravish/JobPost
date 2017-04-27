@@ -15,11 +15,10 @@ class UserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('email', 'password')
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder':'Username'})
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder':'Password'})
 
@@ -148,18 +147,18 @@ class SearchForm(forms.Form):
 ##############################################
 
 
-class SignUpForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
-
-    def __init__(self, *args, **kwargs):
-        super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder':'Username'})
-        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
-        self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder':'Password'})
+# class SignUpForm(ModelForm):
+#     password = forms.CharField(widget=forms.PasswordInput())
+#
+#     class Meta:
+#         model = User
+#         fields = ('username', 'email', 'password')
+#
+#     def __init__(self, *args, **kwargs):
+#         super(SignUpForm, self).__init__(*args, **kwargs)
+#         self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder':'Username'})
+#         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
+#         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder':'Password'})
 
 class EmailForm(ModelForm):
 
@@ -189,11 +188,10 @@ class TwitterEmailForm(ModelForm):
 
     class Meta:
         model = TwitterProfile
-        fields = ('user', 'email', 'oauth_token', 'oauth_secret')
+        fields = ('user', 'email', 'twitter_user_id')
 
     def __init__(self, *args, **kwargs):
         super(TwitterEmailForm, self).__init__(*args, **kwargs)
         self.fields['user'].widget.attrs.update({'class': 'form-control', 'readonly': 'readonly'})
+        self.fields['twitter_user_id'].widget.attrs.update({'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
-        self.fields['oauth_token'].widget.attrs.update({'class': 'form-control', 'readonly': 'readonly'})
-        self.fields['oauth_secret'].widget.attrs.update({'class': 'form-control', 'readonly': 'readonly'})

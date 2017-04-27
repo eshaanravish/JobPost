@@ -23,28 +23,44 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.contrib import messages
+from job.models import Job, Employee, Applicant, ApplicationTime, Messages, \
+UsersMessage, MailedContent
 
 from django.contrib.auth.models import User
 from authenticate.models import FacebookUser, GoogleUser, \
-LinkedinUser, InstagramUser, TwitterProfile, FacebookUserContact, GoogleUserContact
-from job.forms import SignUpForm, EmailForm, \
+LinkedinUser, InstagramUser, TwitterProfile, FacebookUserContact, GoogleUserContact, TwitterUserContact
+from job.forms import UserForm, EmailForm, \
 LinkedinEmailForm, TwitterEmailForm
 
 
 
 def homepage(request):
     if request.method == "POST":
-        form = SignUpForm(request.POST, use_required_attribute= False)
+        form = UserForm(request.POST, use_required_attribute= False)
         if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
-            new_user.save()
-            return render(request, 'social/dashboard.html')
+            if User.objects.filter(username=form.cleaned_data['email']).exists():
+                user = User.objects.get(username=form.cleaned_data['email'])
+                login(request, user)
+                return HttpResponseRedirect(reverse('applicantpage', args=[user.id]))
+            else:
+                user = User.objects.create_user(
+                    username=form.cleaned_data['email'],
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data['password'],
+                )
+                user.save()
+                login(request, user)
+                applier = Applicant.objects.create()
+                applier.username = request.user
+                applier.save()
+                return HttpResponseRedirect(reverse('applicantpage', args=[user.id]))
         else:
             error_message = "Please fill the valid details."
             return render(request, 'social/home.html', {'form': form, 'error_message': error_message})
     else:
         error_message = ""
-        form = SignUpForm(request.POST, use_required_attribute= False)
+        form = UserForm(request.POST, use_required_attribute= False)
         return render(request, 'social/home.html', {'form': form, 'error_message': error_message})
 
 
@@ -543,9 +559,8 @@ consumer = oauth.Consumer(settings.TWITTER_TOKEN, settings.TWITTER_SECRET)
 client = oauth.Client(consumer)
 
 request_token_url = 'https://api.twitter.com/oauth/request_token'
-access_token_url = 'https://api.twitter.com/oauth/access_token'
+access_token_url = 'https://api.twitter.com/oauth/access_token?include_email=true'
 authenticate_url = 'https://api.twitter.com/oauth/authenticate'
-email_url = 'https://api.twitter.com/1.1/account/verify_credentials.json'
 authorize_url = 'https://api.twitter.com/oauth/authorize'
 
 def twitter_login(request):
@@ -567,6 +582,14 @@ def twitter_logout(request):
     return HttpResponseRedirect('/')
 
 
+def oauth_req(url, key, secret, http_method="GET", post_body="", http_headers=None):
+    consumer = oauth.Consumer(key=settings.TWITTER_TOKEN, secret=settings.TWITTER_SECRET)
+    token = oauth.Token(key=key, secret=secret)
+    client = oauth.Client(consumer, token)
+    resp, content = client.request( url, method=http_method, body=post_body, headers=http_headers )
+    return content
+
+
 def twitter_authenticated(request):
     # Use the request token in the session to build a new client.
     token = oauth.Token(request.session['request_token']['oauth_token'],
@@ -577,30 +600,28 @@ def twitter_authenticated(request):
     resp, content = client.request(access_token_url, "GET")
     access_token = dict(cgi.parse_qsl(content))
     print access_token
-    parameters = {
-        'oauth_token' : access_token['oauth_token'],
-        'screen_name' : access_token['screen_name'],
-    }
-    authorize = requests.post(authorize_url, params=parameters)
-    print dir(authorize)
-    print authorize.status_code
-    authorize = authorize.headers
-    print authorize
-    params = {
-        'oauth_token' : access_token['oauth_token'],
-        'include_email' : 'true',
-    }
-    access_email = requests.get(email_url, params=params)
-    print dir(access_email)
-    print access_email.status_code
-    print "&&&&&&&&&&&&&&&&&&&&&"
-    print access_email.headers
+    followers_ids_list = oauth_req('https://api.twitter.com/1.1/followers/ids.json', access_token['oauth_token'], access_token['oauth_token_secret'])
+    print followers_ids_list
+    followers_ids_list = json.loads(followers_ids_list)
+    credentials = oauth_req('https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true', access_token['oauth_token'], access_token['oauth_token_secret'])
+    print credentials
+    credentials = json.loads(credentials)
+    print credentials['email']
+    user_email = credentials['email']
     # Lookup the user or create them if they don't exist.
-    if User.objects.filter(email='%s@twitter.com' % access_token['screen_name']).exists():
-        user = User.objects.get(email='%s@twitter.com' % access_token['screen_name'])
+    if User.objects.filter(email=user_email).exists():
+        user = User.objects.get(email=user_email)
         if TwitterProfile.objects.filter(user=user).exists():
             twitter_profile = TwitterProfile.objects.get(user=user)
             if twitter_profile.email != "":
+                if TwitterUserContact.objects.filter(twitter_user=user).exists():
+                    pass
+                else:
+                    for friends_id in followers_ids_list['ids']:
+                        twitter_contacts = TwitterUserContact.objects.create(
+                            twitter_user=user,
+                            contact_id=friends_id
+                        )
                 login(request, user)
                 if request.user.is_staff:
                     return redirect(reverse('employeepage', args=[request.user.id]))
@@ -615,19 +636,31 @@ def twitter_authenticated(request):
         else:
             profile = TwitterProfile.objects.create(
                 user=user,
-                oauth_token=access_token['oauth_token'],
-                oauth_secret=access_token['oauth_token_secret'],
+                twitter_user_id=access_token['user_id'],
+                email=user_email,
                 )
+            for friends_id in followers_ids_list['ids']:
+                twitter_contacts = TwitterUserContact.objects.create(
+                    twitter_user=user,
+                    contact_id=friends_id
+                )
+            login(request, user)
+            if request.user.is_staff:
+                return redirect(reverse('employeepage', args=[request.user.id]))
+                pass
+            else:
+                return redirect(reverse('applicantpage', args=[request.user.id]))
+                pass
     else:
         user = User.objects.create_user(
-            username='%s@twitter.com' % access_token['screen_name'],
-            email='%s@twitter.com' % access_token['screen_name'],
-            )
+            username=user_email,
+            email=user_email,
+        )
         twitter_profile = TwitterProfile.objects.create(
             user=user,
-            oauth_token=access_token['oauth_token'],
-            oauth_secret=access_token['oauth_token_secret'],
-            )
+            twitter_user_id=access_token['user_id'],
+            email=user_email,
+        )
         if "email" in access_token.keys():
             profile.email = access_token['email']
             login(request, user)

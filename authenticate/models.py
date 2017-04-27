@@ -69,12 +69,20 @@ class FacebookUserContact(models.Model):
     def __str__(self):
         return self.name
 
+class TwitterUserContact(models.Model):
+    twitter_user = models.ForeignKey(User)
+    contact_id = models.CharField(max_length=255)
+    screen_name = models.CharField(max_length=55, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.IntegerField(blank=True, null=True)
+
+    def __int__(self):
+        return self.contact_id
 
 class TwitterProfile(models.Model):
     user = models.ForeignKey(User)
+    twitter_user_id = models.CharField(max_length=255, default=0)
     email = models.EmailField(max_length=200, blank=True)
-    oauth_token = models.CharField(max_length=200)
-    oauth_secret = models.CharField(max_length=200)
 
     def __int__(self):
         return self.user
