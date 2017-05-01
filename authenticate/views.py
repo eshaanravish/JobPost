@@ -7,7 +7,6 @@ import cgi
 
 import requests.packages.urllib3
 requests.packages.urllib3.disable_warnings()
-# from xmljson import badgerfish as bf
 from lxml import etree
 from xml.etree.ElementTree import fromstring
 from json import dumps
@@ -33,6 +32,23 @@ LinkedinUser, InstagramUser, TwitterProfile, FacebookUserContact, GoogleUserCont
 from job.forms import UserForm, EmailForm, \
 LinkedinEmailForm, TwitterEmailForm
 
+
+def user_existance_check(request):
+    if request.is_ajax():
+        email = request.GET.get('email', '')
+        print email
+        if User.objects.filter(username=email).exists():
+            user = User.objects.get(email=email)
+            if GoogleUser.objects.filter(google_user=user).exists() or FacebookUser.objects.filter(facebook_user=user).exists() or LinkedinUser.objects.filter( linkedin_user=user).exists() or TwitterProfile.objects.filter(user=user).exists():
+                response = {'data': True, 'status': True}
+            else:
+                response = {'data': False, 'status': True}
+            return HttpResponse(json.dumps(response))
+        else:
+            response = {'status': False}
+            return HttpResponse(json.dumps(response))
+    else:
+        Http404
 
 
 def homepage(request):
@@ -116,34 +132,40 @@ def get_google_user_contacts(email, token):
                     for elm_key, elm in list_item.items():
                         if "id" in elm_key:
                             if "$" in elm.keys():
-                                print elm['$']
+                                # print elm['$']
                                 user_id = elm['$']
                         if "title" in elm_key:
                             if "$" in elm.keys():
-                                print elm['$']
+                                # print elm['$']
                                 user_name = elm['$']
                             else:
                                 user_name = ""
+                        else:
+                            user_name = ""
                         if "phoneNumber" in elm_key:
                             try:
                                 if "$" in elm.keys():
-                                    print elm['$']
+                                    # print elm['$']
                                     user_contact = elm['$']
                             except:
                                 if "$" in elm[0].keys():
-                                    print elm[0]['$']
+                                    # print elm[0]['$']
                                     user_contact = elm[0]['$']
+                            finally:
+                                user_contact = ""
+                        else:
+                            user_contact = ""
                         if "email" in elm_key:
                             if "@address" in elm.keys():
-                                print elm['@address']
+                                # print elm['@address']
                                 user_email = elm['@address']
-                            g_contacts = GoogleUserContact.objects.create(
-                                google_user=user,
-                                contact_id=user_id,
-                                name=user_name,
-                                email=user_email,
-                                phone=user_contact,
-                            )
+                        g_contacts = GoogleUserContact.objects.create(
+                            google_user=user,
+                            contact_id=user_id,
+                            name=user_name,
+                            email=user_email,
+                            phone=user_contact,
+                        )
         return google_user_contacts
 
 def socialgoogle(request):
@@ -175,7 +197,7 @@ def socialgoogle(request):
                 email=email,
                 )
             new_googleuser.save()
-            if GoogleUserContact.objects.filter(google_user=user).exists():
+            if GoogleUserContact.objects.filter(google_user=new_user).exists():
                 pass
             else:
                 user_contacts = get_google_user_contacts(email, token)
@@ -430,6 +452,7 @@ def get_linkedin_user_info(access_token):
         'Authorization' : 'Bearer ' + access_token,
         }
     info = requests.get(user_info_url, data = data, headers = headers)
+    print info
     return info.json()
 
 

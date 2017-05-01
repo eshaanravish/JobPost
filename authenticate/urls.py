@@ -10,6 +10,7 @@ twitter_authenticated
 
 urlpatterns = [
     url(r'^$', views.homepage, name='homepage'),
+    url(r'^user/existance/$', views.user_existance_check, name='user_existance_check'),
     url(r'^redirect/$', views.userauthenticate, name='userauthenticate'),
     url(r'^google_home/$', views.googleauth, name='googleauth'),
     url(r'^linkedin_home/$', views.linkedinauth, name='linkedinauth'),

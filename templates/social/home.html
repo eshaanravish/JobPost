@@ -4,6 +4,69 @@
     <title>Home</title>
 {% endblock %}
 
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#id_email").blur(function() {
+            if ($("#id_email").val() == "") {
+                document.getElementById("id_mail").innerHTML = "*Email field required!";
+            } else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(signupForm.email.value)) {
+                var url = "user/existance/";
+                style = "background-color: #2a7d31";
+                style_signup = "background-color: #d80400";
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: {"email": $("#id_email").val()},
+                    success: function(response){
+                        response = JSON.parse(response)
+                        if (response.status) {
+                            if (response.data) {
+                                $("#auth_g").attr("style", "background-color: #d14836");
+                                $("#auth_f").attr("style", "background-color: #29487d");
+                                $("#auth_l").attr("style", "background-color: #0084bf");
+                                $("#auth_t").attr("style", "background-color: #1da1f2");
+                                $("#auth_msg").removeAttr("style");
+                                $("#auth_msg").attr("style", "display: block");
+                                $("#login_button").removeAttr("style");
+                                $("#login_button").html('<span class="glyphicon glyphicon-ok"></span> SignUp/Login')
+                            }
+                            else {
+                                $("#login_button").removeAttr("style");
+                                $("#login_button").attr("style", style);
+                                $("#login_button").html('<span class="glyphicon glyphicon-ok"></span> Login')
+                                $("#auth_g").attr("style", "background-color: #fff");
+                                $("#auth_f").attr("style", "background-color: #fff");
+                                $("#auth_l").attr("style", "background-color: #fff");
+                                $("#auth_t").attr("style", "background-color: #fff");
+                                $("#auth_msg").removeAttr("style");
+                                $("#auth_msg").attr("style", "display: block");
+                            }
+                        }
+                        else {
+                            $("#login_button").attr("style", style_signup);
+                            $("#login_button").html('<span class="glyphicon glyphicon-bookmark"></span> SignUp')
+                        }
+                    }
+                })
+                document.getElementById("id_mail").style.visibility = "hidden";
+            } else {
+                document.getElementById("id_mail").innerHTML = "*Enter valid Email!";
+            }
+
+            // $(element).addAttr("value");
+            // $(element).html('<span class="glyphicon glyphicon-paperclip"></span> Applied')
+            // $(this).click(function(e) {
+            //     var target = $(this).attr('data-href');
+            //     if($(e.target).attr('id') !== 'apply_job') {
+            //         window.location = target;
+            //     }
+            // })
+        })
+    })
+</script>
+{% endblock %}
+
 {% block body %}
     <body>
         <h1 id="font" class="font-bold" style="text-align:center; margin-top:80px">
@@ -15,18 +78,13 @@
                     <div class="jumbotron">
                         <div class="row">
                             <div class="col-sm-6" style="border-right:1px groove">
-                                <h4 id="font" class="font-bold" style="text-align:center">
+                                <!-- <h4 id="font" class="font-bold" style="text-align:center">
                                     SignUp/Login
-                                </h4>
+                                </h4> -->
                                 <div>
                                     <br>
                                     <form name="signupForm" action="" method="POST">
                                         {% csrf_token %}
-                                        <div class="form-group">
-                                            <div class="control-label">
-                                                {{ form.username }}
-                                            </div>
-                                        </div>
                                         <div class="form-group">
                                             <div class="control-label">
                                                 {{ form.email }}
@@ -38,23 +96,26 @@
                                             </div>
                                         </div>
                                         <br>
-                                        <button type="submit" class="btn btn-primary btn-block">SignUp/LogIn</button>
-                                        <small style="margin-left: 43%;">{{ error_message }}</small>
+                                        <button id="login_button" type="submit" style="background-color:#8689d8;" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-bookmark"></span> SignUp/LogIn</button>
+                                        <small id="id_mail" style="color:red">{{ error_message }}</small>
                                     </form>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <br>
-                                <div class="btn-group btn-group-justified" style="margin-top:54px">
+                                <div class="btn-group btn-group-justified">
                                     <!-- <a style="margin-left:75px" href="https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http%3A%2F%2Flocalhost%3A8001%2Fhome&response_type=code&client_id=210523529134-nuas607qtkjrs5rnbult07juhsr04j8k.apps.googleusercontent.com">Google</a> -->
-                                    <a class="btn btn-default" href="/google_home/"style="color:#d34836"><i class="fa fa-google" style="margin-top:3px"></i> Google</a>
+                                    <a id="auth_g" class="btn btn-default" href="/google_home/"style="color:#d34836"><i class="fa fa-google" style="margin-top:3px"></i> Google</a>
                                     <!-- <a style="margin-left:75px" href="https://graph.facebook.com/oauth/authorize?client_id=237086353424892&redirect_uri=http%3A%2F%2Flocalhost:8001%2Fsocial_facebook&granted_scopes=public_profile">Facebook</a> -->
-                                    <a class="btn btn-default" href="/facebook_home/" style="color:#3b5998;"><i class="fa fa-facebook" style="margin-top:3px"></i> Facebook</a>
-                                    <a class="btn btn-default" href="/linkedin_home/"><i class="fa fa-linkedin" style="margin-top:3px"></i> LinkedIn</a>
+                                    <a id="auth_f" class="btn btn-default" href="/facebook_home/" style="color:#3b5998;"><i class="fa fa-facebook" style="margin-top:3px"></i> Facebook</a>
+                                    <a id="auth_l" class="btn btn-default" href="/linkedin_home/"><i class="fa fa-linkedin" style="margin-top:3px"></i> LinkedIn</a>
                                 </div>
                                 <div class="btn-group btn-group-justified" style="margin-top:15px">
                                     <!-- <a class="btn btn-default btn-block" href="/instagram_home/"><i class="fa fa-instagram" style="margin-top:3px"></i> Instagram</a> -->
-                                    <a class="btn btn-default btn-block" href="/twitter_login/"><i class="fa fa-twitter" style="margin-top:3px"></i> Twitter</a>
+                                    <a id="auth_t" class="btn btn-default btn-block" href="/twitter_login/"><i class="fa fa-twitter" style="margin-top:3px"></i> Twitter</a>
+                                </div>
+                                <div id="auth_msg" style="display:none; text-align-last: center;">
+                                    Login with your Social Account
                                 </div>
                             </div>
                         </div>

@@ -20,6 +20,7 @@ class UserForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
+        self.fields['email'].required = True
         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder':'Password'})
 
 class EmployeeForm(ModelForm):

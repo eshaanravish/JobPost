@@ -14,6 +14,32 @@ tr:nth-child(odd) {
     background-color: #a3a5a7;
 }
 
+#auth_g {
+    transition: all 1.2s ease-in-out;
+}
+
+#auth_f {
+    transition: all 1.2s ease-in-out;
+}
+
+#auth_t {
+    transition: all 1.2s ease-in-out;
+}
+
+#auth_l {
+    transition: all 1.2s ease-in-out;
+}
+
+#auth_msg {
+    text-align-last: center;
+    transition: all 1.2s ease-in-out;
+}
+
+#login_button {
+    text-align-last: center;
+    transition: all 1.2s ease-in-out;
+}
+
 .job-heading {
     margin-top: 0;
 }
