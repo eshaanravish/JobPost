@@ -16,9 +16,15 @@
                         <form name="Form" action="/email_request/" method="post">
                             {% csrf_token %}
                             {{ message }}
-                            {{ form.facebook_userid }}
+                            <div style="display:hidden">
+                                {{ form.facebook_userid }}
+                            </div>
+                            <div>
                             {{ form.name }}
+                            </div>
+                            <div>
                             {{ form.email }}
+                            </div>
                             <input class="btn btn-default" type="submit" value="Submit"></input>
                         </form>
                     </div>

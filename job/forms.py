@@ -23,6 +23,7 @@ class UserForm(ModelForm):
         self.fields['email'].required = True
         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder':'Password'})
 
+
 class EmployeeForm(ModelForm):
     employee_pic = forms.ImageField(label='Select a file', help_text='max. 42 megabytes')
 
@@ -41,6 +42,7 @@ class EmployeeForm(ModelForm):
         self.fields['dob'].widget.attrs.update({'class': 'form-control'})
         self.fields['joining_date'].widget.attrs.update({'class': 'form-control', 'readonly': 'readonly'})
         self.fields['employee_pic'].widget.attrs.update({'class': 'form-control'})
+
 
 class ApplicantForm(ModelForm):
     applicant_pic = forms.ImageField(label='Select a file', help_text='max. 42 megabytes')
@@ -146,7 +148,8 @@ class SearchForm(forms.Form):
 
 
 ##############################################
-
+#authenticate forms
+##############################################
 
 # class SignUpForm(ModelForm):
 #     password = forms.CharField(widget=forms.PasswordInput())
@@ -161,6 +164,7 @@ class SearchForm(forms.Form):
 #         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
 #         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder':'Password'})
 
+
 class EmailForm(ModelForm):
 
     class Meta:
@@ -173,6 +177,7 @@ class EmailForm(ModelForm):
         self.fields['name'].widget.attrs.update({'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
 
+
 class LinkedinEmailForm(ModelForm):
 
     class Meta:
@@ -184,6 +189,7 @@ class LinkedinEmailForm(ModelForm):
         self.fields['linkedin_userid'].widget.attrs.update({'class': 'form-control'})
         self.fields['name'].widget.attrs.update({'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder':'EmailId'})
+
 
 class TwitterEmailForm(ModelForm):
 

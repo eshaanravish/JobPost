@@ -42,7 +42,7 @@ class FacebookUser(models.Model):
 class GoogleUser(models.Model):
     google_user = models.ForeignKey(User, blank=True, null=True)
     google_userid = models.CharField(max_length=200)
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, blank=True, null=True)
     email = models.CharField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
 

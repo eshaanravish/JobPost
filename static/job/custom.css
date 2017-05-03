@@ -122,3 +122,7 @@ tr:nth-child(odd) {
 .image-circle {
     border-radius: 50%;
 }
+
+#font {
+    font-family: 'Dancing Script', cursive!important;
+}
